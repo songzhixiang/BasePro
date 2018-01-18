@@ -5,6 +5,8 @@ import android.content.Context;
 
 import com.blankj.utilcode.util.Utils;
 
+import java.util.logging.Logger;
+
 import io.realm.Realm;
 
 /**

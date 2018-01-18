@@ -10,4 +10,10 @@
     <color name="view_bg">#00000000</color>
     <color name="shadow">#25808080</color>
     <color name="dialog_bg">#f5f5f5</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="maya_Blue">#73ADFE</color>
+    <color name="light_sky_Blue">#85BFFF</color>
+    <color name="columbia_blue">#9AD1FF</color>
+    <color name="cornflower">#6D8CE3</color>
 </resources>
