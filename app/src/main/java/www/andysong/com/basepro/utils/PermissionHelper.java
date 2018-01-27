@@ -43,12 +43,7 @@ public class PermissionHelper {
                                 final OnPermissionDeniedListener deniedListener,
                                 final @PermissionConstants.Permission String... permissions) {
         PermissionUtils.permission(permissions)
-                .rationale(new PermissionUtils.OnRationaleListener() {
-                    @Override
-                    public void rationale(ShouldRequest shouldRequest) {
-                        DialogHelper.showRationaleDialog(shouldRequest);
-                    }
-                })
+                .rationale(DialogHelper::showRationaleDialog)
                 .callback(new PermissionUtils.FullCallback() {
                     @Override
                     public void onGranted(List<String> permissionsGranted) {

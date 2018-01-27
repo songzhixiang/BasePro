@@ -3,22 +3,36 @@ package www.andysong.com.basepro.base;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.fastjson.JSON;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.trello.rxlifecycle2.android.FragmentEvent;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import www.andysong.com.basepro.R;
+import www.andysong.com.basepro.http.DefaultHttpObserver;
+import www.andysong.com.basepro.http.HttpClientApi;
+import www.andysong.com.basepro.http.parser.BaseParser;
+import www.andysong.com.basepro.http.parser.ParseException;
 
 /**
  * 基类RecyclerView的Fragment
  * Created by andysong on 2018/1/16.
  */
 
-public class BaseRecyclerFragment extends BaseFragment implements BaseListListener, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
+public abstract class BaseRecyclerFragment extends BaseFragment implements BaseListListener, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
 
     public RecyclerView mRecyclerView;
     protected BaseQuickAdapter mAdapter;
@@ -34,6 +48,7 @@ public class BaseRecyclerFragment extends BaseFragment implements BaseListListen
     public Group mList = new Group();
     protected int mViewAnimatorIndex = 0;//默认显示loading
     public boolean isLoadedData = false;//是否已经加载过数据
+    public Disposable mDisposable;
     @Override
     protected void initEventAndData() {
 
@@ -52,6 +67,26 @@ public class BaseRecyclerFragment extends BaseFragment implements BaseListListen
     @Override
     public void loadData() {
         isLoadedData = true;
+//        if (hasCache()) {
+//            String theNewStr = CacheManager.getInstance().get(isCacheBindUser, getCacheKey(), null);
+//            if (theNewStr != null) {
+//                List list = parseCacheArray(theNewStr);
+//                if (list == null) {
+//                    list = new ArrayList();
+//                }
+//                mList.clear();
+//                mList.addAll(list);
+//                mAdapter.notifyDataSetChanged();
+//                onDataChanged(true);
+//            }
+//        }
+        if (!mList.isEmpty()) {
+            setViewAnimatorPage(3);
+            onRefresh();
+        } else {
+            setViewAnimatorPage(0);
+            onRefresh();
+        }
     }
 
     public void initListView(View view, boolean isLoadData) {
@@ -60,12 +95,18 @@ public class BaseRecyclerFragment extends BaseFragment implements BaseListListen
         mLayoutManager = getRecyclerLayoutManager();
         mRecyclerView.setLayoutManager(mLayoutManager);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+
+
         mList.clear();
+
+
         mAdapter = getAdapter();
         mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
         mAdapter.setNotDoAnimationCount(4);
+
         onSetAdapter();
+
         mSwipeRefreshLayout.setEnabled(true);
         mAdapter.setEnableLoadMore(false);
         mAdapter.setPreLoadNumber(mPageSize / 3);
@@ -189,6 +230,124 @@ public class BaseRecyclerFragment extends BaseFragment implements BaseListListen
     }
 
     @Override
+    public void getMessage() {
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+        }
+        mDisposable = null;
+        HashMap requestParams = new HashMap();
+        final String url = getUrl();
+        requestParams.put("page", mCurrentIndex);
+        requestParams.put("pageSize", mPageSize);
+        getRequestParams(requestParams);
+
+        if (mCurrentIndex == START_INDEX) {
+            mAdapter.setEnableLoadMore(false);
+            mSwipeRefreshLayout.setEnabled(true);
+        } else {
+            if (hasLoadMorePullLoadEnable) {
+                mAdapter.setEnableLoadMore(true);
+            } else {
+                mAdapter.setEnableLoadMore(false);
+            }
+            mSwipeRefreshLayout.setEnabled(false);
+        }
+        HttpClientApi.get(url, requestParams, getBaseParser(), new DefaultHttpObserver(mActivity) {
+            @Override
+            public void onStart(Disposable disposable) {
+                super.onStart(disposable);
+                mDisposable = disposable;
+            }
+
+            @Override
+            public void onSuccess(Object o) {
+                Group data;
+                if (TextUtils.isEmpty(url)) {
+                    data = new Group();
+                    Class aClass = getMessageClass();
+                    for (int i = 0; i < 10; i++) {
+                        try {
+                            data.add(aClass.newInstance());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    data = (Group) o;
+                }
+                if (mCurrentIndex == START_INDEX) {
+                    mList.clear();
+//                    if (hasCache() && !TextUtils.isEmpty(url)) {
+//                        CacheManager.getInstance().put(isCacheBindUser, getCacheKey(), JSON.toJSONString(data));
+//                    }
+                }
+                mList.addAll(data);
+                mAdapter.notifyDataSetChanged();
+                onDataChanged(true);
+                mSwipeRefreshLayout.setEnabled(true);
+                if (mSwipeRefreshLayout.isRefreshing()) {
+                    //控件内部bug导致必须先判断再调用
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+                if (hasLoadMorePullLoadEnable) {
+                    mAdapter.setEnableLoadMore(true);
+                    if (data.size() < mPageSize) {
+                        //已加载完毕
+                        mAdapter.loadMoreEnd();
+                        isLoadedAllData = true;
+                    } else {
+                        mAdapter.loadMoreComplete();
+                        isLoadedAllData = false;
+                    }
+                }
+                onServerSuccess();
+                if (mList.isEmpty()) {
+                    setViewAnimatorPage(2);
+                } else {
+                    setViewAnimatorPage(3);
+                }
+            }
+
+            @Override
+            public void onError(@NonNull ParseException e, boolean isLocalError) {
+                super.onError(e, isLocalError);
+                mCurrentIndex = mOldIndex;
+                if (mSwipeRefreshLayout.isRefreshing()) {
+                    //控件内部bug导致必须先判断再调用
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+
+                if (mViewAnimatorIndex == 2 || mViewAnimatorIndex == 3) {
+                    //当正在显示内容页时，不跳转到错误页
+                    mActivity.showErrorMsg(e.getMessage(),1000);
+                } else {
+                    setViewAnimatorPage(1);
+                }
+                if (hasLoadMorePullLoadEnable) {
+                    mAdapter.loadMoreFail();
+                }
+            }
+
+            @Override
+            public void onComplete() {
+                super.onComplete();
+            }
+        }, bindUntilEvent(FragmentEvent.DESTROY_VIEW));
+
+    }
+
+    @Override
+    public String getUrl() {
+        return null;
+    }
+
+    @Override
+    public void getRequestParams(HashMap params) {
+
+    }
+
+
+    @Override
     public void onRefresh() {
         mOldIndex = mCurrentIndex;
         mCurrentIndex = START_INDEX;
@@ -198,5 +357,27 @@ public class BaseRecyclerFragment extends BaseFragment implements BaseListListen
     public void onLoadMoreRequested() {
         mOldIndex = mCurrentIndex;
         mCurrentIndex++;
+    }
+
+    public void onServerSuccess() {
+    }
+
+    @Override
+    public BaseParser getBaseParser() {
+        final Class aClass = getMessageClass();
+        return new BaseParser() {
+            @Override
+            public Object parseIType(JSONObject json) throws JSONException {
+                Group list = new Group();
+                if (json.getString("data").equals("null")) return list;
+                List temp = JSON.parseArray(json.getString("data"), aClass);
+                list.addAll(temp);
+                return list;
+            }
+        };
+    }
+
+    public void setLoadMorePullLoadEnable(boolean loadMorePullLoadEnable) {
+        this.hasLoadMorePullLoadEnable = loadMorePullLoadEnable;
     }
 }

@@ -4,6 +4,10 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
+import java.util.HashMap;
+
+import www.andysong.com.basepro.http.parser.BaseParser;
+
 /**
  * Created by andysong on 2018/1/16.
  */
@@ -25,4 +29,18 @@ public interface BaseListListener {
     View getEmptyView();
 
     View getLoadingView();
+
+    void getMessage();
+
+    String getUrl();
+
+    void getRequestParams(HashMap params);
+
+    Class getMessageClass();
+
+    void onServerSuccess();
+
+    BaseParser getBaseParser();
+
+    void setLoadMorePullLoadEnable(boolean loadMorePullLoadEnable);
 }

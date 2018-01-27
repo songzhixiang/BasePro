@@ -10,7 +10,7 @@ import www.andysong.com.basepro.base.BaseFragment;
  *     author : andysong
  *     e-mail : songzhixiang960425@gmail.com
  *     time   : 2018/01/18
- *     desc   :示例登陆
+ *     desc   : 示例登陆
  *     version: 1.0
  * </pre>
  */

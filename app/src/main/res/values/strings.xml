@@ -1,5 +1,19 @@
 <resources>
     <string name="app_name">BasePro</string>
+    <string name="tam">旅行青蛙存档修改器</string>
+    <string name="clover">三叶草</string>
+    <string name="tickets">抽奖券</string>
+    <string name="save">保存</string>
+    <string name="number">%d</string>
+    <string name="success_msg">修改成功</string>
+    <string name="failure_msg">修改失败</string>
+    <string name="number_err_msg">请填写正确的数值</string>
+    <string name="archive_pick">选择存档文件</string>
+    <string name="archive_not_found">存档文件不存在</string>
+    <string name="archive_permission_denied">无法访问存档文件</string>
+
+
+    <string name="error_tips">糟糕！加载失败了ヽ(≧Д≦)ノ\n 偷偷告诉你一些可能的原因：\n1.惨不忍睹的网络环境\n 2.服务器君的不定期抽风~</string>
     <string name="permission_rationale_message">You have rejected us to apply for authorization, please agree to authorization, otherwise the function can\'t be used normally!</string>
     <string name="permission_denied_forever_message">We need some of the permissions you rejected or the system failed to apply failed, please manually set to the page authorize, otherwise the function can\'t be used normally!</string>
 </resources>

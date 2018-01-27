@@ -14,11 +14,12 @@
         android:src="@mipmap/ic_error_data" />
 
     <TextView
+        android:layout_marginTop="16dp"
         android:id="@+id/errorMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:text="网络连接失败，请刷新重试" />
-
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.4"
+        android:text="@string/error_tips"/>
 
 </LinearLayout>

@@ -1,16 +1,23 @@
 package www.andysong.com.basepro.base;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.tapadoo.alerter.Alerter;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.disposables.Disposable;
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportActivity;
 import me.yokeyword.fragmentation.ISupportFragment;
@@ -18,6 +25,8 @@ import me.yokeyword.fragmentation.SupportActivityDelegate;
 import me.yokeyword.fragmentation.SupportHelper;
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
+import www.andysong.com.basepro.R;
+import www.andysong.com.basepro.custom_view.loadingview.ShapeLoadingDialog;
 
 /**
  * BaseActivity
@@ -28,7 +37,8 @@ public abstract class BaseActivity extends RxAppCompatActivity implements ISuppo
     protected Activity mContext;
     private Unbinder mUnBinder;
     final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);
-
+    private String mDefaultLoadingString = "加载中...";
+    private ShapeLoadingDialog mDialog;
     @Override
     public SupportActivityDelegate getSupportDelegate() {
         return mDelegate;
@@ -43,9 +53,9 @@ public abstract class BaseActivity extends RxAppCompatActivity implements ISuppo
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDelegate.onCreate(savedInstanceState);
+        mContext = this;
         setContentView(getLayout());
         mUnBinder = ButterKnife.bind(this);
-        mContext = this;
         initEventAndData();
     }
 
@@ -127,6 +137,57 @@ public abstract class BaseActivity extends RxAppCompatActivity implements ISuppo
 
     public <T extends ISupportFragment> T findFragment(Class<T> fragmentClass) {
         return SupportHelper.findFragment(getSupportFragmentManager(), fragmentClass);
+    }
+
+
+    public void showWaitingDialog(String message, DialogInterface.OnCancelListener listener) {
+        if (message == null) {
+            message = mDefaultLoadingString;
+        }
+        mDialog = new ShapeLoadingDialog.Builder(this)
+                .loadText(message)
+                .build();
+        mDialog.setOnCancelListener(listener);
+        mDialog.show();
+    }
+
+    public void dismissWaitingDialog() {
+        if (null != mDialog) {
+            mDialog.dismiss();
+        }
+    }
+
+    public void showErrorMsg(String msg, int time) {
+//        SnackbarUtil.show(((ViewGroup) getActivity().findViewById(android.R.id.content)).getChildAt(0), msg);
+        Alerter.create(this)
+                .setTitle("提示：")
+                .setText(msg)
+                .setBackgroundColorRes(R.color.colorPrimary)
+                .setDuration(time)
+                .show();
+    }
+
+    /**
+     * 将网络请求绑定到生命周期
+     *
+     * @return
+     */
+    public LifecycleTransformer getLifecycleTransformer() {
+        return bindUntilEvent(ActivityEvent.DESTROY);
+    }
+
+    /**
+     * 展示加载框，传入网络控制器
+     *
+     * @param message
+     * @param disposable
+     */
+    public void showWaitingDialog(String message, final Disposable disposable) {
+        showWaitingDialog(message, dialog -> {
+            if (disposable != null && !disposable.isDisposed()) {
+                disposable.dispose();
+            }
+        });
     }
 
     protected abstract int getLayout();

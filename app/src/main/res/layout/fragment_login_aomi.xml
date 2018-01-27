@@ -117,7 +117,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:maxLines="1"
-        android:text="———————— Fast login without register ————————"
+        android:text="Fast login without register"
         app:layout_constraintTop_toBottomOf="@+id/button"
         />
 

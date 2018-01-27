@@ -1,6 +1,7 @@
 package www.andysong.com.basepro.base;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -13,11 +14,13 @@ import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.disposables.Disposable;
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.SupportFragmentDelegate;
 import me.yokeyword.fragmentation.SupportHelper;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
+import www.andysong.com.basepro.R;
 
 /**
  * BaseFragment
@@ -30,6 +33,30 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
     protected FragmentActivity _mActivity;
     private Unbinder mUnBinder;
     protected View mView;
+    protected BaseActivity mActivity;
+    private static final int STATE_MAIN = 0x00;
+    private static final int STATE_LOADING = 0x01;
+    private static final int STATE_ERROR = 0x02;
+    private static final int STATE_EMPTY = 0x03;
+
+    private View viewError;
+    private View viewLoading;
+    private View viewEmpty;
+    private ViewGroup viewMain;
+    private ViewGroup mParent;
+
+    private int mErrorResource = R.layout.view_loading_error;
+
+
+    private int mEmptyResource = R.layout.view_loading_empty;
+
+    private int currentState = STATE_MAIN;
+
+    private boolean isErrorViewAdded = false;
+
+
+    private boolean isEmptyViewAdded = false;
+
     @Override
     public SupportFragmentDelegate getSupportDelegate() {
         return mDelegate;
@@ -51,6 +78,7 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mDelegate.onAttach(activity);
+        mActivity = (BaseActivity) activity;
         _mActivity = mDelegate.getActivity();
     }
 
@@ -257,7 +285,140 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
         return SupportHelper.findFragment(getChildFragmentManager(), fragmentClass);
     }
 
-    protected abstract void initEventAndData();
 
     protected abstract int getLayoutId();
+
+    protected void initEventAndData() {
+        if (getView() == null)
+            return;
+        viewMain = (ViewGroup) getView().findViewById(R.id.swiplayout);
+        if (viewMain == null) {
+            throw new IllegalStateException(
+                    "The subclass of RootActivity must contain a View named 'view_main'.");
+        }
+        if (!(viewMain.getParent() instanceof ViewGroup)) {
+            throw new IllegalStateException(
+                    "view_main's ParentView should be a ViewGroup.");
+        }
+        mParent = (ViewGroup) viewMain.getParent();
+        View.inflate(mActivity, R.layout.view_loading, mParent);
+        viewLoading = mParent.findViewById(R.id.fragment_loading);
+        viewLoading.setVisibility(View.GONE);
+        viewMain.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 系统toast提示
+     *
+     * @param msg
+     */
+    public void showToastMsg(String msg,int time) {
+        mActivity.showErrorMsg(msg,time);
+    }
+
+    /**
+     * 显示错误视图
+     */
+    public void stateError() {
+        if (currentState == STATE_ERROR)
+            return;
+        if (!isErrorViewAdded) {
+            isErrorViewAdded = true;
+            View.inflate(mActivity, mErrorResource, mParent);
+            viewError = mParent.findViewById(R.id.globalError);
+            if (viewError == null) {
+                throw new IllegalStateException(
+                        "A View should be named 'view_error' in ErrorLayoutResource.");
+            }
+        }
+        hideCurrentView();
+        currentState = STATE_ERROR;
+        viewError.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 显示空视图
+     */
+    public void stateEmpty() {
+        if (currentState == STATE_EMPTY)
+            return;
+        if (!isEmptyViewAdded) {
+            isEmptyViewAdded = true;
+            View.inflate(mActivity, mEmptyResource, mParent);
+            viewEmpty = mParent.findViewById(R.id.globalEmpty);
+            if (viewEmpty == null) {
+                throw new IllegalStateException(
+                        "A View should be named 'view_error' in ErrorLayoutResource.");
+            }
+        }
+        hideCurrentView();
+        currentState = STATE_EMPTY;
+        viewEmpty.setVisibility(View.VISIBLE);
+
+    }
+
+
+    /**
+     * 显示加载视图
+     */
+    public void stateLoading() {
+        if (currentState == STATE_LOADING)
+            return;
+        hideCurrentView();
+        currentState = STATE_LOADING;
+        viewLoading.setVisibility(View.VISIBLE);
+
+    }
+
+
+    /**
+     * 显示内容
+     */
+    public void stateMain() {
+        if (currentState == STATE_MAIN)
+            return;
+        hideCurrentView();
+        currentState = STATE_MAIN;
+        viewMain.setVisibility(View.VISIBLE);
+    }
+
+    private void hideCurrentView() {
+        switch (currentState) {
+            case STATE_MAIN:
+                viewMain.setVisibility(View.GONE);
+                break;
+            case STATE_LOADING:
+                viewLoading.setVisibility(View.GONE);
+                break;
+            case STATE_ERROR:
+                if (viewError != null) {
+                    viewError.setVisibility(View.GONE);
+                }
+                break;
+        }
+    }
+
+    public void setErrorResource(int errorLayoutResource) {
+        this.mErrorResource = errorLayoutResource;
+    }
+
+
+    /**
+     * 打开加载弹出框
+     *
+     * @param message  加载信息
+     * @param listener OnCancelListener 一般用于在手动关闭时停止当前联网
+     */
+    public void showWaitingDialog(String message, DialogInterface.OnCancelListener listener) {
+        mActivity.showWaitingDialog(message, listener);
+    }
+
+    public void showWaitingDialog(String message, final Disposable disposable) {
+        mActivity.showWaitingDialog(message, disposable);
+    }
+
+    public void dismissWaitingDialog() {
+        mActivity.dismissWaitingDialog();
+    }
+
 }
