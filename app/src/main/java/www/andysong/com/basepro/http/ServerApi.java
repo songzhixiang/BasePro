@@ -21,7 +21,7 @@ import retrofit2.http.Url;
  */
 
 public interface ServerApi {
-    String HOST = "http://longyi.cdabon.com/";
+    String HOST = "http://g-api.cdabon.com/";
     @POST
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     Observable<String> postString(@Url String url, @Body RequestBody body);

@@ -23,8 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginBottom="32dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginStart="64dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_editext"
         android:orientation="horizontal"
@@ -56,8 +56,8 @@
         android:id="@+id/ll_edit_pwd"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginStart="64dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_editext"
         android:orientation="horizontal"
@@ -67,28 +67,30 @@
         app:layout_constraintTop_toBottomOf="@+id/ll_edit_phone">
 
         <ImageView
-            android:background="@android:color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="16dp"
+            android:background="@android:color/transparent"
             android:src="@mipmap/ic_login_pwd" />
 
         <EditText
             android:id="@+id/et_pwd"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="48dp"
             android:layout_marginLeft="16dp"
+            android:layout_weight="1"
             android:background="@android:color/transparent"
             android:hint="Password"
             android:textSize="12dp" />
+
         <TextView
-            android:textColor="@color/maya_Blue"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginRight="16dp"
             android:text="Fogot!"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/maya_Blue" />
     </LinearLayout>
 
 
@@ -96,8 +98,8 @@
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginStart="64dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/button_login"
         android:text="Login"
@@ -114,7 +116,7 @@
         android:id="@+id/tv_login_tips"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:maxLines="1"
         android:text="Fast login without register"

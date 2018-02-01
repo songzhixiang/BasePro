@@ -1,5 +1,7 @@
 package www.andysong.com.basepro.example;
 
+import android.os.Bundle;
+
 import www.andysong.com.basepro.R;
 import www.andysong.com.basepro.base.BaseActivity;
 
@@ -21,7 +23,7 @@ public class ExLoginActivity extends BaseActivity {
     }
 
     @Override
-    protected void initEventAndData() {
+    protected void initEventAndData(Bundle savedInstanceState) {
         if (findFragment(ExLoginFragment.class) == null) {
             loadRootFragment(R.id.fl_container, ExLoginFragment.newInstance());
         }

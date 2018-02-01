@@ -22,14 +22,9 @@ import www.andysong.com.basepro.http.parser.ParseException;
 public abstract class DefaultHttpObserver<T> implements HttpClientApi.HttpObserver<T> {
 
     public Disposable mDisposable;
-    public BaseActivity mBaseActivity;
     public BaseFragment mBaseFragment;
 
     public DefaultHttpObserver() {
-    }
-
-    public DefaultHttpObserver(BaseActivity baseActivity) {
-        mBaseActivity = baseActivity;
     }
 
     public DefaultHttpObserver(BaseFragment baseFragment) {
@@ -55,7 +50,7 @@ public abstract class DefaultHttpObserver<T> implements HttpClientApi.HttpObserv
     }
 
     @Override
-    public void onError(Throwable e) {
+    final public void onError(Throwable e) {
         e.printStackTrace();
         if (e instanceof IOException ||
                 (e instanceof ParseException && "local".equals(((ParseException) e).SERVER_ERROR_CODE))) {

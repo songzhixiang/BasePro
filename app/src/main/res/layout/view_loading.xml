@@ -6,11 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <www.andysong.com.basepro.custom_view.loadingview.LoadingView
+    <com.mingle.widget.LoadingView
         android:id="@+id/loadingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:loadingText="加载中..."
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        app:loadingText="加载中..." />
 </RelativeLayout>

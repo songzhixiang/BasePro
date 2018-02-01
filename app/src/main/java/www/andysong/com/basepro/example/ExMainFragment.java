@@ -36,8 +36,8 @@ public class ExMainFragment extends BaseFragment {
     }
 
     @Override
-    protected void initEventAndData() {
-
+    protected void initEventAndData(View mView) {
+        super.initEventAndData(mView);
     }
 
     @Override

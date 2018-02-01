@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.FileUtils;
 import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.trello.rxlifecycle2.android.FragmentEvent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +22,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import www.andysong.com.basepro.base.BaseActivity;
+import www.andysong.com.basepro.base.BaseFragment;
 import www.andysong.com.basepro.http.DefaultHttpObserver;
 import www.andysong.com.basepro.http.HttpClientApi;
 import www.andysong.com.basepro.http.parser.BaseParser;
@@ -39,12 +41,12 @@ import www.andysong.com.basepro.http.parser.ParseException;
 public class UpLoadImageHelper {
 
 
-    public static void sendImage(final BaseActivity activity, String imageUri, final String upurl, final boolean isCompress, final CallBack callBack) {
-        final DefaultHttpObserver observer = new DefaultHttpObserver<List<String>>(activity) {
+    public static void sendImage(final BaseFragment fragment, String imageUri, final String upurl, final boolean isCompress, final CallBack callBack) {
+        final DefaultHttpObserver observer = new DefaultHttpObserver<List<String>>(fragment) {
             @Override
             public void onStart(final Disposable disposable) {
                 super.onStart(disposable);
-                activity.showWaitingDialog(null, dialog -> {
+                fragment.showWaitingDialog(null, dialog -> {
                     if (disposable != null && !disposable.isDisposed()) {
                         disposable.dispose();
                     }
@@ -66,8 +68,8 @@ public class UpLoadImageHelper {
             @Override
             public void onError(@NonNull ParseException e, boolean isLocalError) {
                 super.onError(e, isLocalError);
-                activity.showErrorMsg("上传失败",1000);
-                activity.dismissWaitingDialog();
+                fragment.showErrorMsg("上传失败",1000);
+                fragment.dismissWaitingDialog();
                 if (callBack != null) {
                     callBack.onFailure();
                 }
@@ -121,7 +123,7 @@ public class UpLoadImageHelper {
             public Object parseIType(JSONObject json) throws JSONException {
                 return JSON.parseArray(json.getString("data"), String.class);
             }
-        }, observer, activity.bindUntilEvent(ActivityEvent.DESTROY));
+        }, observer, fragment.bindUntilEvent(FragmentEvent.DESTROY));
     }
 
 

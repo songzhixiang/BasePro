@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mingle.widget.ShapeLoadingDialog;
 import com.tapadoo.alerter.Alerter;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.android.ActivityEvent;
@@ -26,7 +27,7 @@ import me.yokeyword.fragmentation.SupportHelper;
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import www.andysong.com.basepro.R;
-import www.andysong.com.basepro.custom_view.loadingview.ShapeLoadingDialog;
+
 
 /**
  * BaseActivity
@@ -56,7 +57,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements ISuppo
         mContext = this;
         setContentView(getLayout());
         mUnBinder = ButterKnife.bind(this);
-        initEventAndData();
+        initEventAndData(savedInstanceState);
     }
 
     @Override
@@ -91,9 +92,13 @@ public abstract class BaseActivity extends RxAppCompatActivity implements ISuppo
     }
 
     @Override
+    final public void onBackPressed() {
+        mDelegate.onBackPressed();
+    }
+
+    @Override
     public void onBackPressedSupport() {
         mDelegate.onBackPressedSupport();
-
     }
 
     @Override
@@ -105,6 +110,13 @@ public abstract class BaseActivity extends RxAppCompatActivity implements ISuppo
 
     public void loadRootFragment(int containerId, @NonNull ISupportFragment toFragment) {
         mDelegate.loadRootFragment(containerId, toFragment);
+    }
+
+    /**
+     * 加载多个同级根Fragment,类似Wechat, QQ主页的场景
+     */
+    public void loadMultipleRootFragment(int containerId, int showPosition, ISupportFragment... toFragments) {
+        mDelegate.loadMultipleRootFragment(containerId, showPosition, toFragments);
     }
 
     public void start(ISupportFragment toFragment) {
@@ -144,10 +156,9 @@ public abstract class BaseActivity extends RxAppCompatActivity implements ISuppo
         if (message == null) {
             message = mDefaultLoadingString;
         }
-        mDialog = new ShapeLoadingDialog.Builder(this)
-                .loadText(message)
-                .build();
-        mDialog.setOnCancelListener(listener);
+        mDialog = new ShapeLoadingDialog(this);
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.setLoadingText(message);
         mDialog.show();
     }
 
@@ -191,5 +202,5 @@ public abstract class BaseActivity extends RxAppCompatActivity implements ISuppo
     }
 
     protected abstract int getLayout();
-    protected abstract void initEventAndData();
+    protected abstract void initEventAndData(Bundle savedInstanceState);
 }

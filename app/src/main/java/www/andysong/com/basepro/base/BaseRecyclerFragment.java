@@ -49,20 +49,13 @@ public abstract class BaseRecyclerFragment extends BaseFragment implements BaseL
     protected int mViewAnimatorIndex = 0;//默认显示loading
     public boolean isLoadedData = false;//是否已经加载过数据
     public Disposable mDisposable;
-    @Override
-    protected void initEventAndData() {
-
-    }
 
     @Override
-    protected int getLayoutId() {
-        return 0;
+    protected void initEventAndData(View mView) {
+        super.initEventAndData(mView);
     }
 
-    @Override
-    public BaseQuickAdapter getAdapter() {
-        return null;
-    }
+
 
     @Override
     public void loadData() {
@@ -146,10 +139,6 @@ public abstract class BaseRecyclerFragment extends BaseFragment implements BaseL
         onRefresh();
     }
 
-    @Override
-    public void onSetAdapter() {
-
-    }
 
     /**
      * 自动刷新
@@ -252,7 +241,7 @@ public abstract class BaseRecyclerFragment extends BaseFragment implements BaseL
             }
             mSwipeRefreshLayout.setEnabled(false);
         }
-        HttpClientApi.get(url, requestParams, getBaseParser(), new DefaultHttpObserver(mActivity) {
+        HttpClientApi.get(url, requestParams, getBaseParser(), new DefaultHttpObserver(this) {
             @Override
             public void onStart(Disposable disposable) {
                 super.onStart(disposable);
@@ -336,27 +325,21 @@ public abstract class BaseRecyclerFragment extends BaseFragment implements BaseL
 
     }
 
-    @Override
-    public String getUrl() {
-        return null;
-    }
 
-    @Override
-    public void getRequestParams(HashMap params) {
-
-    }
 
 
     @Override
     public void onRefresh() {
         mOldIndex = mCurrentIndex;
         mCurrentIndex = START_INDEX;
+        getMessage();
     }
 
     @Override
     public void onLoadMoreRequested() {
         mOldIndex = mCurrentIndex;
         mCurrentIndex++;
+        getMessage();
     }
 
     public void onServerSuccess() {

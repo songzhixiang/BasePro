@@ -1,6 +1,11 @@
 package www.andysong.com.basepro.modular.index;
 
+import android.os.Bundle;
+
+import www.andysong.com.basepro.R;
 import www.andysong.com.basepro.base.BaseActivity;
+import www.andysong.com.basepro.example.ExLoginFragment;
+import www.andysong.com.basepro.modular.shop.ui.ExListFragment;
 
 /**
  * 登陆界面
@@ -10,11 +15,13 @@ import www.andysong.com.basepro.base.BaseActivity;
 public class LoginActivity extends BaseActivity {
     @Override
     protected int getLayout() {
-        return 0;
+        return R.layout.activity_main;
     }
 
     @Override
-    protected void initEventAndData() {
-
+    protected void initEventAndData(Bundle savedInstanceState) {
+        if (findFragment(ExLoginFragment.class) == null) {
+            loadRootFragment(R.id.fl_container, ExLoginFragment.newInstance());
+        }
     }
 }

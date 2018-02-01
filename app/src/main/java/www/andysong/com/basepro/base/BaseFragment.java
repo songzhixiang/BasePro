@@ -10,6 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 
+import com.tapadoo.alerter.Alerter;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import butterknife.ButterKnife;
@@ -38,7 +42,7 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
     private static final int STATE_LOADING = 0x01;
     private static final int STATE_ERROR = 0x02;
     private static final int STATE_EMPTY = 0x03;
-
+    protected Bundle savedInstanceState;
     private View viewError;
     private View viewLoading;
     private View viewEmpty;
@@ -66,7 +70,17 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(getLayoutId(), null);
+        initEventAndData(mView);
         return mView;
+    }
+
+    /**
+     * 将网络请求绑定到生命周期
+     *
+     * @return
+     */
+    public LifecycleTransformer getLifecycleTransformer() {
+        return bindUntilEvent(FragmentEvent.DESTROY);
     }
 
     @Override
@@ -86,6 +100,7 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDelegate.onCreate(savedInstanceState);
+        this.savedInstanceState = savedInstanceState;
     }
 
     @Override
@@ -122,6 +137,7 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
         mDelegate.onDestroyView();
         super.onDestroyView();
         mUnBinder.unbind();
+        hideSoftInput();
     }
 
     @Override
@@ -160,7 +176,6 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         mDelegate.onLazyInitView(savedInstanceState);
-        initEventAndData();
     }
 
     @Override
@@ -188,6 +203,16 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
     public FragmentAnimator onCreateFragmentAnimator() {
         return mDelegate.onCreateFragmentAnimator();
 
+    }
+
+    public void showErrorMsg(String msg, int time) {
+//        SnackbarUtil.show(((ViewGroup) getActivity().findViewById(android.R.id.content)).getChildAt(0), msg);
+        Alerter.create(mActivity)
+                .setTitle("提示：")
+                .setText(msg)
+                .setBackgroundColorRes(R.color.colorPrimary)
+                .setDuration(time)
+                .show();
     }
 
     @Override
@@ -271,11 +296,17 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
 
     public void pop() {
         mDelegate.pop();
-        hideSoftInput();
     }
 
     public void popTo(Class<?> targetFragmentClass, boolean includeTargetFragment) {
         mDelegate.popTo(targetFragmentClass, includeTargetFragment);
+    }
+
+    /**
+     * Pop the child fragment.
+     */
+    public void popChild() {
+        mDelegate.popChild();
     }
 
     /**
@@ -288,7 +319,7 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
 
     protected abstract int getLayoutId();
 
-    protected void initEventAndData() {
+    protected void initEventAndData(View mView) {
         if (getView() == null)
             return;
         viewMain = (ViewGroup) getView().findViewById(R.id.swiplayout);
