@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.tapadoo.alerter.Alerter;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.android.ActivityEvent;
@@ -42,12 +43,12 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
     private static final int STATE_LOADING = 0x01;
     private static final int STATE_ERROR = 0x02;
     private static final int STATE_EMPTY = 0x03;
-    protected Bundle savedInstanceState;
     private View viewError;
     private View viewLoading;
     private View viewEmpty;
     private ViewGroup viewMain;
     private ViewGroup mParent;
+    protected boolean isInited = false;
 
     private int mErrorResource = R.layout.view_loading_error;
 
@@ -70,7 +71,8 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(getLayoutId(), null);
-        initEventAndData(mView);
+        QMUIStatusBarHelper.translucent(_mActivity);
+
         return mView;
     }
 
@@ -100,7 +102,6 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDelegate.onCreate(savedInstanceState);
-        this.savedInstanceState = savedInstanceState;
     }
 
     @Override
@@ -176,6 +177,8 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         mDelegate.onLazyInitView(savedInstanceState);
+        isInited = true;
+        initEventAndData(mView);
     }
 
     @Override
@@ -207,7 +210,7 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
 
     public void showErrorMsg(String msg, int time) {
 //        SnackbarUtil.show(((ViewGroup) getActivity().findViewById(android.R.id.content)).getChildAt(0), msg);
-        Alerter.create(mActivity)
+        Alerter.create(_mActivity)
                 .setTitle("提示：")
                 .setText(msg)
                 .setBackgroundColorRes(R.color.colorPrimary)
@@ -322,7 +325,7 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
     protected void initEventAndData(View mView) {
         if (getView() == null)
             return;
-        viewMain = (ViewGroup) getView().findViewById(R.id.swiplayout);
+        viewMain = getView().findViewById(R.id.swiplayout);
         if (viewMain == null) {
             throw new IllegalStateException(
                     "The subclass of RootActivity must contain a View named 'view_main'.");

@@ -52,15 +52,21 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.9.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     //glide
-    implementation 'com.github.bumptech.glide:glide:4.2.0'
-    annotationProcessor "com.github.bumptech.glide:compiler:4.2.0"
-    implementation 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
+    implementation ("com.github.bumptech.glide:glide:4.5.0") {
+        exclude group: "com.android.support"
+    }
+    implementation ("com.github.bumptech.glide:okhttp-integration:4.5.0") {
+        transitive = false
+    }
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
+
+    implementation ("com.github.bumptech.glide:glide:4.5.0@aar") {
+        transitive = true
+    }
     //dex
     implementation 'com.android.support:multidex:1.0.2'
     //bugly
     implementation 'com.tencent.bugly:crashreport:2.6.5'
-    //图片选择框架
-    implementation 'com.zhihu.android:matisse:0.4.3'
     //Android util
     implementation 'com.blankj:utilcode:1.11.1'
 
@@ -85,6 +91,8 @@ dependencies {
     implementation 'com.github.zzz40500:android-shapeLoadingView:1.0.3.2'
     //eventbus
     implementation 'org.greenrobot:eventbus:3.1.1'
-    //知乎 选择图片框架
-    implementation 'com.zhihu.android:matisse:0.4.3'
+    //选择图片框架
+    implementation 'com.github.HuanTanSheng:EasyPhotos:2.2.9'
+    //QMUI
+    implementation 'com.qmuiteam:qmui:1.0.7'
 }

@@ -1,9 +1,8 @@
 package www.andysong.com.basepro.example;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v4.util.ArrayMap;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,14 +11,9 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.DeviceUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.Utils;
-
-import java.util.HashMap;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import www.andysong.com.basepro.R;
 import www.andysong.com.basepro.base.BaseFragment;
 import www.andysong.com.basepro.http.HttpClientApi;
@@ -101,7 +95,7 @@ public class ExLoginFragment extends BaseFragment {
     }
 
     private void requestLogin() {
-        HashMap params = new HashMap();
+        ArrayMap params = new ArrayMap();
 
         String mobile = etPhone.getText().toString();
         String password = etPwd.getText().toString();
@@ -109,7 +103,7 @@ public class ExLoginFragment extends BaseFragment {
         params.put("mobile",mobile);
         params.put("password",password);
 
-        HashMap headParams = new HashMap();
+        ArrayMap headParams = new ArrayMap();
         headParams.put("device-id", DeviceUtils.getAndroidID());
         headParams.put("device-id", DeviceUtils.getAndroidID());//设备id
         headParams.put("device-model", DeviceUtils.getManufacturer());//厂商

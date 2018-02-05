@@ -1,14 +1,17 @@
 package www.andysong.com.basepro;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.huantansheng.easyphotos.EasyPhotos;
 import com.luseen.spacenavigation.SpaceItem;
 import com.luseen.spacenavigation.SpaceNavigationView;
 import com.luseen.spacenavigation.SpaceOnClickListener;
+
 
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +24,8 @@ import www.andysong.com.basepro.modular.favorite.ui.FavoriteFragment;
 import www.andysong.com.basepro.modular.index.ui.IndexFragment;
 import www.andysong.com.basepro.modular.my.ui.MyFragment;
 import www.andysong.com.basepro.modular.shop.ui.ShopFragment;
+
+import www.andysong.com.basepro.utils.GlideEngine;
 import www.andysong.com.basepro.utils.PermissionHelper;
 
 public class MainActivity extends BaseActivity {
@@ -39,6 +44,9 @@ public class MainActivity extends BaseActivity {
 
     int count = 1;
     int mTabIndex;
+
+    private static final int REQUEST_CODE_CHOOSE = 23;
+
     @Override
     protected int getLayout() {
         return R.layout.fragment_ex_main;
@@ -80,7 +88,7 @@ public class MainActivity extends BaseActivity {
         bottomBar.setSpaceOnClickListener(new SpaceOnClickListener() {
             @Override
             public void onCentreButtonClick() {
-
+                startWithMatisse();
             }
 
             @Override
@@ -116,6 +124,12 @@ public class MainActivity extends BaseActivity {
 
         viewPager.setOffscreenPageLimit(5);
         viewPager.setAdapter(new MainPagerFragmentAdapter(getSupportFragmentManager(), mFragments));
+    }
+
+    private void startWithMatisse() {
+        EasyPhotos.createAlbum(this, true, GlideEngine.getInstance())//参数说明：上下文，是否显示相机按钮，[配置Glide为图片加载引擎](https://github.com/HuanTanSheng/EasyPhotos/wiki/12-%E9%85%8D%E7%BD%AEImageEngine%EF%BC%8C%E6%94%AF%E6%8C%81%E6%89%80%E6%9C%89%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD%E5%BA%93)
+                .setFileProviderAuthority("www.andysong.com.basepro.fileprovider")//参数说明：见下方`FileProvider的配置`
+                .start(101);
     }
 
     private void initPermission() {

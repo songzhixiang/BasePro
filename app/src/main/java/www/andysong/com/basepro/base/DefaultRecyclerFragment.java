@@ -2,6 +2,7 @@ package www.andysong.com.basepro.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import java.util.concurrent.TimeUnit;
 
@@ -32,8 +33,8 @@ public abstract class DefaultRecyclerFragment extends BaseRecyclerFragment {
     }
 
     @Override
-    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
-        super.onLazyInitView(savedInstanceState);
+    protected void initEventAndData(View mView) {
+        super.initEventAndData(mView);
         if (!isLoadedData) {
             if (mDisposableObserver != null && !mDisposableObserver.isDisposed()) {
                 mDisposableObserver.dispose();

@@ -1,10 +1,9 @@
 package www.andysong.com.basepro.modular.shop.ui;
 
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-
-import java.util.HashMap;
 
 import www.andysong.com.basepro.base.DefaultRecyclerFragment;
 import www.andysong.com.basepro.modular.shop.adapter.ExAdapter;
@@ -47,7 +46,7 @@ public class ExListFragment extends DefaultRecyclerFragment {
     }
 
     @Override
-    public void getRequestParams(HashMap params) {
+    public void getRequestParams(ArrayMap params) {
         
     }
 

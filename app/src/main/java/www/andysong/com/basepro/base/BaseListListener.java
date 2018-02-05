@@ -1,10 +1,9 @@
 package www.andysong.com.basepro.base;
 
+import android.support.v4.util.ArrayMap;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-
-import java.util.HashMap;
 
 import www.andysong.com.basepro.http.parser.BaseParser;
 
@@ -34,7 +33,7 @@ public interface BaseListListener {
 
     String getUrl();
 
-    void getRequestParams(HashMap params);
+    void getRequestParams(ArrayMap params);
 
     Class getMessageClass();
 

@@ -1,5 +1,8 @@
 package www.andysong.com.basepro.http;
 
+import android.support.v4.util.ArrayMap;
+import android.util.SparseArray;
+
 import java.util.Map;
 
 import io.reactivex.Flowable;
@@ -28,10 +31,10 @@ public interface ServerApi {
 
     @POST
     @FormUrlEncoded
-    Observable<String> postFormString(@Url String url, @FieldMap Map<String, String> map, @HeaderMap Map<String, String> header);
+    Observable<String> postFormString(@Url String url, @FieldMap ArrayMap<String, String> map, @HeaderMap ArrayMap<String, String> header);
 
     @GET
-    Observable<String> getString(@Url String url, @QueryMap Map<String, String> map);
+    Observable<String> getString(@Url String url, @QueryMap ArrayMap<String, String> map);
 
     @POST
     Observable<String> uploadFile(@Url String url, @Body RequestBody body);

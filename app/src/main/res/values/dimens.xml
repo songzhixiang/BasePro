@@ -12,4 +12,5 @@
     <dimen name="dp_40">40dp</dimen>
     <dimen name="dp_4">4dp</dimen>
     <dimen name="sp_14">14sp</dimen>
+    <dimen name="grid_expected_size">120dp</dimen>
 </resources>

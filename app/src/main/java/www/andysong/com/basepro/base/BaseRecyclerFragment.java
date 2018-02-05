@@ -1,5 +1,6 @@
 package www.andysong.com.basepro.base;
 
+import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;
@@ -224,7 +224,7 @@ public abstract class BaseRecyclerFragment extends BaseFragment implements BaseL
             mDisposable.dispose();
         }
         mDisposable = null;
-        HashMap requestParams = new HashMap();
+        ArrayMap requestParams = new ArrayMap();
         final String url = getUrl();
         requestParams.put("page", mCurrentIndex);
         requestParams.put("pageSize", mPageSize);

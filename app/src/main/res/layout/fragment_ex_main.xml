@@ -13,8 +13,8 @@
 
 
     <com.luseen.spacenavigation.SpaceNavigationView
-        app:active_item_color="@color/colorBlack"
-        app:centre_button_color="@color/colorBlack"
+        app:active_item_color="@color/maya_Blue"
+        app:centre_button_color="@color/maya_Blue"
         app:inactive_item_color="@color/tab_unselect"
         app:space_background_color="@color/colorWhite"
         app:centre_button_icon="@drawable/ic_camera"

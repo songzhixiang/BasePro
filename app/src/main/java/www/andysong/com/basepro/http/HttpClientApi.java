@@ -1,5 +1,6 @@
 package www.andysong.com.basepro.http;
 
+import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -12,20 +13,15 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
@@ -142,7 +138,7 @@ public class HttpClientApi {
      * @param observer observer
      * @param lifecycle 生命周期，与RxJava进行绑定，避免内存泄露
      */
-    public static void get(String url, HashMap params,
+    public static void get(String url, ArrayMap params,
                            final Class aclass, final boolean isList,
                            HttpObserver observer, LifecycleTransformer lifecycle) {
         BaseParser iParser = new BaseParser() {
@@ -171,7 +167,7 @@ public class HttpClientApi {
      * @param observer
      * @param lifecycle
      */
-    public static void getResult(String url, HashMap params,
+    public static void getResult(String url, ArrayMap params,
                                  final Class aclass, final boolean isList,
                                  HttpObserver observer, LifecycleTransformer lifecycle) {
         BaseParser iParser = new BaseParser() {
@@ -193,7 +189,7 @@ public class HttpClientApi {
 
 
 
-    public static void get(String url, HashMap params, IParser parser,
+    public static void get(String url, ArrayMap params, IParser parser,
                            final HttpObserver observer, LifecycleTransformer lifecycle) {
         if (TextUtils.isEmpty(url)) {
             //模拟
@@ -217,7 +213,7 @@ public class HttpClientApi {
     // post请求
     ///////////////////////////////////////////////////////////////////////////
 
-    public static void post(String url, HashMap params,
+    public static void post(String url, ArrayMap params,
                             final Class aclass, final boolean isList,
                             HttpObserver observer, LifecycleTransformer lifecycle) {
         BaseParser iParser = new BaseParser() {
@@ -238,7 +234,7 @@ public class HttpClientApi {
     }
 
 
-    public static void post(String url, HashMap params, IParser parser,
+    public static void post(String url, ArrayMap params, IParser parser,
                             final HttpObserver observer, LifecycleTransformer lifecycle) {
         if (TextUtils.isEmpty(url)) {
             //模拟
@@ -254,11 +250,11 @@ public class HttpClientApi {
                 }
             };
         }
-        Observable ob = getDefault().postFormString(url, params, new HashMap<String, String>());
+        Observable ob = getDefault().postFormString(url, params, new ArrayMap<>());
         doRequest(ob, parser, observer, lifecycle);
     }
 
-    public static void postHeader(String url, HashMap header, HashMap params,
+    public static void postHeader(String url, ArrayMap header, ArrayMap params,
                                   final Class aclass, final boolean isList,
                                   final HttpObserver observer, LifecycleTransformer lifecycle) {
         BaseParser iParser;
