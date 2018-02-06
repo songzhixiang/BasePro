@@ -32,7 +32,7 @@ public class ExListFragment extends DefaultRecyclerFragment {
     
     @Override
     public BaseQuickAdapter getAdapter() {
-        return new ExAdapter(null);
+        return new ExAdapter(mList);
     }
 
     @Override

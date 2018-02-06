@@ -5,8 +5,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <View
+        android:background="@color/columbia_blue"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/status_bar_height"/>
     <com.qmuiteam.qmui.widget.QMUITopBar
         android:id="@+id/topbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/qmui_topbar_height"/>
+    <TextView
+        android:text="这是收藏"
+        android:id="@+id/tv_index"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

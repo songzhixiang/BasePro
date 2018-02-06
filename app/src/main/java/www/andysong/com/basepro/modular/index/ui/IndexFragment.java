@@ -2,6 +2,7 @@ package www.andysong.com.basepro.modular.index.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +55,7 @@ public class IndexFragment extends BaseFragment {
         super.initEventAndData(mView);
         LogUtils.e("IndexFragment  加载了");
         topbar.setTitle("首页");
+        topbar.setBackgroundColor(ContextCompat.getColor(_mActivity, R.color.columbia_blue));
         topbar.addRightImageButton(R.drawable.ic_camera,1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

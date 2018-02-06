@@ -25,7 +25,6 @@ import www.andysong.com.basepro.http.NoDataResponse;
  */
 
 public abstract class DefaultRecyclerFragment extends BaseRecyclerFragment {
-    private DisposableObserver mDisposableObserver;
 
     @Override
     protected int getLayoutId() {
@@ -36,9 +35,7 @@ public abstract class DefaultRecyclerFragment extends BaseRecyclerFragment {
     protected void initEventAndData(View mView) {
         super.initEventAndData(mView);
         if (!isLoadedData) {
-            if (mDisposableObserver != null && !mDisposableObserver.isDisposed()) {
-                mDisposableObserver.dispose();
-            }
+
             syncLoad();
         }
     }
@@ -55,38 +52,9 @@ public abstract class DefaultRecyclerFragment extends BaseRecyclerFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        boolean isLoad = true;
-        int loadDelay = 0;
+        initListView(getView());
 
-//        if (isLoad) {
-//            initListView(getView(), false);
-//            mDisposableObserver = new DisposableObserver() {
-//
-//                @Override
-//                public void onNext(Object o) {
-//                    syncLoad();
-//                }
-//
-//                @Override
-//                public void onError(Throwable e) {
-//                    syncLoad();
-//                }
-//
-//                @Override
-//                public void onComplete() {
-//
-//                }
-//            };
-//            Observable.create((ObservableOnSubscribe) emitter -> {
-//                emitter.onNext(new NoDataResponse());
-//                emitter.onComplete();
-//            }).delay(loadDelay, TimeUnit.MILLISECONDS)
-//                    .subscribeOn(Schedulers.computation())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(mDisposableObserver);
-//        } else {
-        initListView(getView(), isLoad);
-//        }
     }
+
 
 }

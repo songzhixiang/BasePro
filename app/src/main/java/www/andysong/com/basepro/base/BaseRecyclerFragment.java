@@ -51,28 +51,8 @@ public abstract class BaseRecyclerFragment extends BaseFragment implements BaseL
     public Disposable mDisposable;
 
     @Override
-    protected void initEventAndData(View mView) {
-        super.initEventAndData(mView);
-    }
-
-
-
-    @Override
     public void loadData() {
         isLoadedData = true;
-//        if (hasCache()) {
-//            String theNewStr = CacheManager.getInstance().get(isCacheBindUser, getCacheKey(), null);
-//            if (theNewStr != null) {
-//                List list = parseCacheArray(theNewStr);
-//                if (list == null) {
-//                    list = new ArrayList();
-//                }
-//                mList.clear();
-//                mList.addAll(list);
-//                mAdapter.notifyDataSetChanged();
-//                onDataChanged(true);
-//            }
-//        }
         if (!mList.isEmpty()) {
             setViewAnimatorPage(3);
             onRefresh();
@@ -82,7 +62,7 @@ public abstract class BaseRecyclerFragment extends BaseFragment implements BaseL
         }
     }
 
-    public void initListView(View view, boolean isLoadData) {
+    public void initListView(View view) {
         mSwipeRefreshLayout = view.findViewById(R.id.swiplayout);
         mRecyclerView =  view.findViewById(R.id.recylcerview);
         mLayoutManager = getRecyclerLayoutManager();
@@ -105,10 +85,7 @@ public abstract class BaseRecyclerFragment extends BaseFragment implements BaseL
         mAdapter.setPreLoadNumber(mPageSize / 3);
         mRecyclerView.setAdapter(mAdapter);
         initViewAnimator();
-        if (isLoadData)
-        {
-            loadData();
-        }
+
 
     }
 
@@ -193,7 +170,7 @@ public abstract class BaseRecyclerFragment extends BaseFragment implements BaseL
         if (empty != null) {
             mStateViews.add(empty);
         } else {
-            mStateViews.add(inflater.inflate(R.layout.view_loading_error, null));
+            mStateViews.add(inflater.inflate(R.layout.view_loading_empty, null));
         }
 
     }
@@ -362,5 +339,14 @@ public abstract class BaseRecyclerFragment extends BaseFragment implements BaseL
 
     public void setLoadMorePullLoadEnable(boolean loadMorePullLoadEnable) {
         this.hasLoadMorePullLoadEnable = loadMorePullLoadEnable;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mList.clear();
+        mStateViews.clear();
+        mList = null;
+        mStateViews = null;
     }
 }

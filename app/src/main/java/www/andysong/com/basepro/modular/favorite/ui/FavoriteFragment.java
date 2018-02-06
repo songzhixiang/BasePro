@@ -6,7 +6,9 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
+import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
 import butterknife.BindView;
 import www.andysong.com.basepro.R;
@@ -45,7 +47,8 @@ public class FavoriteFragment extends BaseFragment {
     protected void initEventAndData(View mView) {
         super.initEventAndData(mView);
         LogUtils.e("FavoriteFragment  加载了");
+        QMUIStatusBarHelper.getStatusbarHeight(getContext());
         mTopBar.setTitle("搜索");
-        mTopBar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.columbia_blue));
+        mTopBar.setBackgroundColor(ContextCompat.getColor(_mActivity, R.color.columbia_blue));
     }
 }
