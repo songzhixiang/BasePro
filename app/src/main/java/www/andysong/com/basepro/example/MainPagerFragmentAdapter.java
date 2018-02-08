@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import www.andysong.com.basepro.base.BaseFragment;
+import www.andysong.com.basepro.core.base.BaseFragment;
 import www.andysong.com.basepro.modular.favorite.ui.FavoriteFragment;
 import www.andysong.com.basepro.modular.index.ui.IndexFragment;
 import www.andysong.com.basepro.modular.my.ui.MyFragment;

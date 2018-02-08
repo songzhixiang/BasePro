@@ -34,9 +34,11 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.fastjson.FastJsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+import www.andysong.com.basepro.db.RealmManager;
 import www.andysong.com.basepro.http.parser.BaseParser;
 import www.andysong.com.basepro.http.parser.IParser;
 import www.andysong.com.basepro.http.parser.ParseException;
+import www.andysong.com.basepro.utils.UserManager;
 
 /**
  *请求帮助类
@@ -47,7 +49,6 @@ public class HttpClientApi {
 
     private static ServerApi SERVICE;
 
-    private static boolean isLogin = false;
 
     public static ServerApi getDefault() {
         if (SERVICE == null) {
@@ -62,8 +63,10 @@ public class HttpClientApi {
             //设置统一的请求头部参数
             builder.addInterceptor(chain -> {
                 Request original = chain.request();
-                if (isLogin) {
+                if (UserManager.isLogin()) {
                     Request request = original.newBuilder()
+                            .header("Authorization", RealmManager.INSTANCE.queryUserToken().getType()+" "
+                            +RealmManager.INSTANCE.queryUserToken().getAccess())
                             .header("device-id", DeviceUtils.getAndroidID())
                             .header("device-model", DeviceUtils.getManufacturer())
                             .header("os-name", "Android")

@@ -3,7 +3,7 @@ package www.andysong.com.basepro.http;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import www.andysong.com.basepro.GlobalConfig;
-import www.andysong.com.basepro.base.BaseFragment;
+import www.andysong.com.basepro.core.base.BaseFragment;
 import www.andysong.com.basepro.http.parser.ParseException;
 
 /**
@@ -41,7 +41,7 @@ public abstract class FragmentStateHttpObserver<T> extends DefaultHttpObserver<T
     public void onStart(Disposable disposable) {
         super.onStart(disposable);
         if (mBaseFragment != null && isLoading) {
-            mBaseFragment.stateLoading();
+//            mBaseFragment.stateLoading();
         }
     }
 
@@ -49,7 +49,7 @@ public abstract class FragmentStateHttpObserver<T> extends DefaultHttpObserver<T
     public void onError(@NonNull ParseException e, boolean isLocalError) {
         super.onError(e, isLocalError);
         if (mBaseFragment != null && isLoading) {
-            mBaseFragment.stateError();
+//            mBaseFragment.stateError();
             mBaseFragment.showToastMsg(e.getMessage(),1000);
         }
     }
@@ -58,7 +58,7 @@ public abstract class FragmentStateHttpObserver<T> extends DefaultHttpObserver<T
     public void onNext(T t) {
         super.onNext(t);
         if (mBaseFragment != null) {
-            mBaseFragment.stateMain();
+//            mBaseFragment.stateMain();
         }
     }
 

@@ -1,4 +1,4 @@
-package www.andysong.com.basepro.base;
+package www.andysong.com.basepro.core.base;
 
 import android.support.v4.util.ArrayMap;
 import android.view.View;

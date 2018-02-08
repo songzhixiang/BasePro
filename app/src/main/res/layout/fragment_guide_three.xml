@@ -5,21 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_marginTop="64dp"
-        android:layout_centerHorizontal="true"
+    <Button
+        android:id="@+id/btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/guide_three" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp"
-        android:text="This is Three Page"
-        android:textColor="@color/cornflower"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        android:layout_centerVertical="true"
+        android:text="Start"
+        android:textAllCaps="false" />
 </RelativeLayout>

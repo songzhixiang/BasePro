@@ -3,8 +3,6 @@ package www.andysong.com.basepro.utils;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.blankj.utilcode.util.FileUtils;
-import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
 import org.json.JSONException;
@@ -21,8 +19,7 @@ import io.reactivex.functions.Function;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import www.andysong.com.basepro.base.BaseActivity;
-import www.andysong.com.basepro.base.BaseFragment;
+import www.andysong.com.basepro.core.base.BaseFragment;
 import www.andysong.com.basepro.http.DefaultHttpObserver;
 import www.andysong.com.basepro.http.HttpClientApi;
 import www.andysong.com.basepro.http.parser.BaseParser;

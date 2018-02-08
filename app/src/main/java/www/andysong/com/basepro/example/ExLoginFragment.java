@@ -1,6 +1,7 @@
 package www.andysong.com.basepro.example;
 
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.widget.Button;
@@ -9,13 +10,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.DeviceUtils;
-import com.blankj.utilcode.util.LogUtils;
+import com.vondear.rxtools.RxDeviceTool;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import www.andysong.com.basepro.MainActivity;
 import www.andysong.com.basepro.R;
-import www.andysong.com.basepro.base.BaseFragment;
+import www.andysong.com.basepro.core.base.BaseFragment;
 import www.andysong.com.basepro.http.HttpClientApi;
 import www.andysong.com.basepro.http.ProgressHttpObserver;
 import www.andysong.com.basepro.http.parser.ParseException;
@@ -62,14 +65,15 @@ public class ExLoginFragment extends BaseFragment {
         return fragment;
     }
 
-    @Override
-    protected void initEventAndData(View mView) {
-        super.initEventAndData(mView);
-    }
 
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_login_aomi;
+    }
+
+    @Override
+    protected void initEventAndData(View mView) {
+
     }
 
 
@@ -104,10 +108,9 @@ public class ExLoginFragment extends BaseFragment {
         params.put("password",password);
 
         ArrayMap headParams = new ArrayMap();
-        headParams.put("device-id", DeviceUtils.getAndroidID());
-        headParams.put("device-id", DeviceUtils.getAndroidID());//设备id
+        headParams.put("device-id", RxDeviceTool.getUniqueSerialNumber());//设备id
         headParams.put("device-model", DeviceUtils.getManufacturer());//厂商
-        headParams.put("device-token", "szx123456789");
+        headParams.put("device-token", RxDeviceTool.getMacAddress());
         headParams.put("os-name", "Android");
         headParams.put("os-version", DeviceUtils.getSDKVersion());
 
@@ -115,7 +118,8 @@ public class ExLoginFragment extends BaseFragment {
             @Override
             public void onSuccess(UserBean userBean) {
                 UserManager.setUser(userBean.getUser());
-                LogUtils.e("登陆成功了");
+                ActivityUtils.startActivity(MainActivity.class);
+                ActivityCompat.finishAfterTransition(mActivity);
             }
 
             @Override

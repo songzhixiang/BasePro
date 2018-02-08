@@ -2,10 +2,8 @@ package www.andysong.com.basepro.db;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmResults;
 import www.andysong.com.basepro.modular.my.bean.Token;
 import www.andysong.com.basepro.modular.my.bean.User;
-import www.andysong.com.basepro.modular.my.bean.UserBean;
 
 /**
  * Created by andysong on 2018/1/16.

@@ -1,18 +1,16 @@
 package www.andysong.com.basepro.modular.favorite.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
-import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
 import butterknife.BindView;
 import www.andysong.com.basepro.R;
-import www.andysong.com.basepro.base.BaseFragment;
+import www.andysong.com.basepro.core.base.BaseFragment;
 
 /**
  * <pre>
@@ -45,7 +43,6 @@ public class FavoriteFragment extends BaseFragment {
 
     @Override
     protected void initEventAndData(View mView) {
-        super.initEventAndData(mView);
         LogUtils.e("FavoriteFragment  加载了");
         QMUIStatusBarHelper.getStatusbarHeight(getContext());
         mTopBar.setTitle("搜索");

@@ -5,8 +5,7 @@ import java.io.IOException;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import retrofit2.HttpException;
-import www.andysong.com.basepro.base.BaseActivity;
-import www.andysong.com.basepro.base.BaseFragment;
+import www.andysong.com.basepro.core.base.BaseFragment;
 import www.andysong.com.basepro.http.parser.ParseException;
 
 /**

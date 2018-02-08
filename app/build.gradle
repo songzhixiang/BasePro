@@ -97,4 +97,6 @@ dependencies {
     implementation 'com.qmuiteam:qmui:1.0.7'
     //RxTools
     implementation 'com.github.vondear:RxTools:v1.7.6.8'
+    //banner
+    implementation 'cn.bingoogolapple:bga-banner:2.2.4@aar'
 }

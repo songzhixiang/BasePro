@@ -1,4 +1,4 @@
-package www.andysong.com.basepro.base;
+package www.andysong.com.basepro.core.base;
 
 /**
  * 有Header的RecyclerFragment

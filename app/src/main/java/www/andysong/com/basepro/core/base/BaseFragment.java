@@ -1,4 +1,4 @@
-package www.andysong.com.basepro.base;
+package www.andysong.com.basepro.core.base;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -13,7 +13,6 @@ import android.view.animation.Animation;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.tapadoo.alerter.Alerter;
 import com.trello.rxlifecycle2.LifecycleTransformer;
-import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
@@ -39,28 +38,8 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
     private Unbinder mUnBinder;
     protected View mView;
     protected BaseActivity mActivity;
-    private static final int STATE_MAIN = 0x00;
-    private static final int STATE_LOADING = 0x01;
-    private static final int STATE_ERROR = 0x02;
-    private static final int STATE_EMPTY = 0x03;
-    private View viewError;
-    private View viewLoading;
-    private View viewEmpty;
-    private ViewGroup viewMain;
-    private ViewGroup mParent;
     protected boolean isInited = false;
 
-    private int mErrorResource = R.layout.view_loading_error;
-
-
-    private int mEmptyResource = R.layout.view_loading_empty;
-
-    private int currentState = STATE_MAIN;
-
-    private boolean isErrorViewAdded = false;
-
-
-    private boolean isEmptyViewAdded = false;
 
     @Override
     public SupportFragmentDelegate getSupportDelegate() {
@@ -322,118 +301,15 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
 
     protected abstract int getLayoutId();
 
-    protected void initEventAndData(View mView) {
-        if (getView() == null)
-            return;
-        viewMain = getView().findViewById(R.id.swiplayout);
-        if (viewMain == null) {
-            throw new IllegalStateException(
-                    "The subclass of RootActivity must contain a View named 'view_main'.");
-        }
-        if (!(viewMain.getParent() instanceof ViewGroup)) {
-            throw new IllegalStateException(
-                    "view_main's ParentView should be a ViewGroup.");
-        }
-        mParent = (ViewGroup) viewMain.getParent();
-        View.inflate(mActivity, R.layout.view_loading, mParent);
-        viewLoading = mParent.findViewById(R.id.fragment_loading);
-        viewLoading.setVisibility(View.GONE);
-        viewMain.setVisibility(View.VISIBLE);
-    }
+    protected abstract void initEventAndData(View mView);
 
     /**
      * 系统toast提示
      *
      * @param msg
      */
-    public void showToastMsg(String msg,int time) {
-        mActivity.showErrorMsg(msg,time);
-    }
-
-    /**
-     * 显示错误视图
-     */
-    public void stateError() {
-        if (currentState == STATE_ERROR)
-            return;
-        if (!isErrorViewAdded) {
-            isErrorViewAdded = true;
-            View.inflate(mActivity, mErrorResource, mParent);
-            viewError = mParent.findViewById(R.id.globalError);
-            if (viewError == null) {
-                throw new IllegalStateException(
-                        "A View should be named 'view_error' in ErrorLayoutResource.");
-            }
-        }
-        hideCurrentView();
-        currentState = STATE_ERROR;
-        viewError.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * 显示空视图
-     */
-    public void stateEmpty() {
-        if (currentState == STATE_EMPTY)
-            return;
-        if (!isEmptyViewAdded) {
-            isEmptyViewAdded = true;
-            View.inflate(mActivity, mEmptyResource, mParent);
-            viewEmpty = mParent.findViewById(R.id.globalEmpty);
-            if (viewEmpty == null) {
-                throw new IllegalStateException(
-                        "A View should be named 'view_error' in ErrorLayoutResource.");
-            }
-        }
-        hideCurrentView();
-        currentState = STATE_EMPTY;
-        viewEmpty.setVisibility(View.VISIBLE);
-
-    }
-
-
-    /**
-     * 显示加载视图
-     */
-    public void stateLoading() {
-        if (currentState == STATE_LOADING)
-            return;
-        hideCurrentView();
-        currentState = STATE_LOADING;
-        viewLoading.setVisibility(View.VISIBLE);
-
-    }
-
-
-    /**
-     * 显示内容
-     */
-    public void stateMain() {
-        if (currentState == STATE_MAIN)
-            return;
-        hideCurrentView();
-        currentState = STATE_MAIN;
-        viewMain.setVisibility(View.VISIBLE);
-    }
-
-    private void hideCurrentView() {
-        switch (currentState) {
-            case STATE_MAIN:
-                viewMain.setVisibility(View.GONE);
-                break;
-            case STATE_LOADING:
-                viewLoading.setVisibility(View.GONE);
-                break;
-            case STATE_ERROR:
-                if (viewError != null) {
-                    viewError.setVisibility(View.GONE);
-                }
-                break;
-        }
-    }
-
-    public void setErrorResource(int errorLayoutResource) {
-        this.mErrorResource = errorLayoutResource;
+    public void showToastMsg(String msg, int time) {
+        mActivity.showErrorMsg(msg, time);
     }
 
 

@@ -3,7 +3,7 @@ package www.andysong.com.basepro.http;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import www.andysong.com.basepro.GlobalConfig;
-import www.andysong.com.basepro.base.BaseFragment;
+import www.andysong.com.basepro.core.base.BaseFragment;
 import www.andysong.com.basepro.http.parser.ParseException;
 import www.andysong.com.basepro.utils.UserManager;
 

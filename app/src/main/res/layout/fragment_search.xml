@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     android:orientation="vertical"
-    android:id="@+id/swiplayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -13,9 +12,14 @@
         android:id="@+id/topbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/qmui_topbar_height"/>
-    <TextView
-        android:text="这是搜索"
-        android:id="@+id/tv_index"
-        android:layout_width="wrap_content"
+    <Button
+        android:text="启动一个可以侧滑删除的Activity"
+        android:id="@+id/btn_start_swipeactivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:text="启动一个可以侧滑删除的Fragment"
+        android:id="@+id/btn_start_swipefragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

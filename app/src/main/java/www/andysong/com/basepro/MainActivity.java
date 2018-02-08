@@ -1,6 +1,5 @@
 package www.andysong.com.basepro;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
@@ -17,13 +16,9 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import io.reactivex.Observable;
-import www.andysong.com.basepro.base.BaseActivity;
-import www.andysong.com.basepro.base.BaseFragment;
+import www.andysong.com.basepro.core.base.BaseActivity;
+import www.andysong.com.basepro.core.base.BaseFragment;
 import www.andysong.com.basepro.example.MainPagerFragmentAdapter;
-import www.andysong.com.basepro.modular.favorite.ui.FavoriteFragment;
-import www.andysong.com.basepro.modular.index.ui.IndexFragment;
-import www.andysong.com.basepro.modular.my.ui.MyFragment;
-import www.andysong.com.basepro.modular.shop.ui.ShopFragment;
 
 import www.andysong.com.basepro.utils.GlideEngine;
 import www.andysong.com.basepro.utils.PermissionHelper;
@@ -35,10 +30,10 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.bottomBar)
     SpaceNavigationView bottomBar;
 
-    public static final int FIRST = 0;
-    public static final int SECOND = 1;
-    public static final int THIRD = 2;
-    public static final int FOURTH = 3;
+//    public static final int FIRST = 0;
+//    public static final int SECOND = 1;
+//    public static final int THIRD = 2;
+//    public static final int FOURTH = 3;
 
     private BaseFragment[] mFragments = new BaseFragment[4];
 
@@ -55,27 +50,27 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initEventAndData(Bundle savedInstanceState) {
         initPermission();
-        BaseFragment firstFragment = findFragment(IndexFragment.class);
-        if (firstFragment == null) {
-            mFragments[FIRST] = IndexFragment.newInstance();
-            mFragments[SECOND] = ShopFragment.newInstance();
-            mFragments[THIRD] = FavoriteFragment.newInstance();
-            mFragments[FOURTH] = MyFragment.newInstance();
-
-            loadMultipleRootFragment(R.id.viewPager, FIRST,
-                    mFragments[FIRST],
-                    mFragments[SECOND],
-                    mFragments[THIRD],
-                    mFragments[FOURTH]);
-        } else {
-            // 这里库已经做了Fragment恢复,所有不需要额外的处理了, 不会出现重叠问题
-
-            // 这里我们需要拿到mFragments的引用
-            mFragments[FIRST] = firstFragment;
-            mFragments[SECOND] = findFragment(ShopFragment.class);
-            mFragments[THIRD] = findFragment(FavoriteFragment.class);
-            mFragments[FOURTH] = findFragment(MyFragment.class);
-        }
+//        BaseFragment firstFragment = findFragment(IndexFragment.class);
+//        if (firstFragment == null) {
+//            mFragments[FIRST] = IndexFragment.newInstance();
+//            mFragments[SECOND] = ShopFragment.newInstance();
+//            mFragments[THIRD] = FavoriteFragment.newInstance();
+//            mFragments[FOURTH] = MyFragment.newInstance();
+//
+//            loadMultipleRootFragment(R.id.viewPager, FIRST,
+//                    mFragments[FIRST],
+//                    mFragments[SECOND],
+//                    mFragments[THIRD],
+//                    mFragments[FOURTH]);
+//        } else {
+//            // 这里库已经做了Fragment恢复,所有不需要额外的处理了, 不会出现重叠问题
+//
+//            // 这里我们需要拿到mFragments的引用
+//            mFragments[FIRST] = firstFragment;
+//            mFragments[SECOND] = findFragment(ShopFragment.class);
+//            mFragments[THIRD] = findFragment(FavoriteFragment.class);
+//            mFragments[FOURTH] = findFragment(MyFragment.class);
+//        }
 
 
         bottomBar.initWithSaveInstanceState(savedInstanceState);

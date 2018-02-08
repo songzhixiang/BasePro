@@ -19,5 +19,5 @@ public class GlobalConfig {
     /**
      * 是否必须登录
      */
-    public final static boolean mustLogin = false;
+    public final static boolean mustLogin = true;
 }

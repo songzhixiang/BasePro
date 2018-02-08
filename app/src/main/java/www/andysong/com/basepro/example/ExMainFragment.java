@@ -2,15 +2,11 @@ package www.andysong.com.basepro.example;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import www.andysong.com.basepro.R;
-import www.andysong.com.basepro.base.BaseFragment;
+import www.andysong.com.basepro.core.base.BaseFragment;
 import www.andysong.com.basepro.custom_view.BottomBar;
 
 /**
@@ -35,14 +31,16 @@ public class ExMainFragment extends BaseFragment {
         return fragment;
     }
 
-    @Override
-    protected void initEventAndData(View mView) {
-        super.initEventAndData(mView);
-    }
+
 
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_main;
+    }
+
+    @Override
+    protected void initEventAndData(View mView) {
+
     }
 
 }

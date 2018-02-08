@@ -3,7 +3,7 @@ package www.andysong.com.basepro.example;
 import android.os.Bundle;
 
 import www.andysong.com.basepro.R;
-import www.andysong.com.basepro.base.BaseActivity;
+import www.andysong.com.basepro.core.base.BaseActivity;
 
 /**
  * <pre>

@@ -4,15 +4,11 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import com.blankj.utilcode.util.LogUtils;
-import com.luseen.spacenavigation.SpaceItem;
 import com.luseen.spacenavigation.SpaceNavigationView;
-import com.luseen.spacenavigation.SpaceOnClickListener;
 
 import butterknife.BindView;
 import www.andysong.com.basepro.R;
-import www.andysong.com.basepro.base.BaseFragment;
-import www.andysong.com.basepro.utils.PermissionHelper;
+import www.andysong.com.basepro.core.base.BaseFragment;
 
 /**
  * <pre>

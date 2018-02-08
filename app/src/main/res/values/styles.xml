@@ -3,6 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="QMUI.Compat.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:windowIsTranslucent">true</item>
         <item name="android:listPreferredItemHeight">?attr/qmui_list_item_height_higher</item>
         <item name="android:listPreferredItemHeightSmall">?attr/qmui_list_item_height</item>
         <item name="colorAccent">@color/maya_Blue</item>
@@ -11,6 +12,20 @@
         <item name="QMUITopBarStyle">@style/QDTopBar</item>
         <item name="qmui_content_spacing_horizontal">20dp</item>
         <item name="qmui_content_padding_horizontal">@dimen/qmui_content_spacing_horizontal</item>
+    </style>
+
+    <style name="SplashTheme" parent="AppTheme">
+        <!-- 欢迎页背景引用刚才写好的 -->
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+
+    <style name="AppTheme.Guide">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <style name="QDTopBar" parent="QMUI.TopBar">

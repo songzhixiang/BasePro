@@ -5,7 +5,7 @@ import android.support.v4.util.ArrayMap;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
-import www.andysong.com.basepro.base.DefaultRecyclerFragment;
+import www.andysong.com.basepro.core.base.DefaultRecyclerFragment;
 import www.andysong.com.basepro.modular.shop.adapter.ExAdapter;
 import www.andysong.com.basepro.modular.shop.bean.ExBean;
 

@@ -3,9 +3,8 @@ package www.andysong.com.basepro.modular.index;
 import android.os.Bundle;
 
 import www.andysong.com.basepro.R;
-import www.andysong.com.basepro.base.BaseActivity;
+import www.andysong.com.basepro.core.base.BaseActivity;
 import www.andysong.com.basepro.example.ExLoginFragment;
-import www.andysong.com.basepro.modular.shop.ui.ExListFragment;
 
 /**
  * 登陆界面

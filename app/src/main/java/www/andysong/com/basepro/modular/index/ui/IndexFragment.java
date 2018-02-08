@@ -1,23 +1,27 @@
 package www.andysong.com.basepro.modular.index.ui;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.support.v4.util.ArrayMap;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.LogUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import www.andysong.com.basepro.R;
-import www.andysong.com.basepro.base.BaseFragment;
+import www.andysong.com.basepro.core.base.DefaultRecyclerFragment;
+import www.andysong.com.basepro.core.base.Group;
+import www.andysong.com.basepro.http.parser.BaseParser;
+import www.andysong.com.basepro.modular.index.adapter.ProfitListAdapter;
+import www.andysong.com.basepro.modular.index.bean.ProfitDetailsBean;
 
 /**
  * <pre>
@@ -29,17 +33,13 @@ import www.andysong.com.basepro.base.BaseFragment;
  * </pre>
  */
 
-public class IndexFragment extends BaseFragment {
+public class IndexFragment extends DefaultRecyclerFragment {
 
 
     @BindView(R.id.topbar)
     QMUITopBar topbar;
 
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_index;
-    }
 
     public static IndexFragment newInstance() {
 
@@ -62,5 +62,49 @@ public class IndexFragment extends BaseFragment {
                 LogUtils.e("点击了右边");
             }
         });
+    }
+
+    @Override
+    public BaseQuickAdapter getAdapter() {
+        return new ProfitListAdapter(mList);
+    }
+
+    @Override
+    public void onSetAdapter() {
+
+    }
+
+    @Override
+    public String getUrl() {
+        return "api/v1/user/trade";
+    }
+
+    @Override
+    public void getRequestParams(ArrayMap params) {
+        params.put("type",3);
+    }
+
+    @Override
+    public Class getMessageClass() {
+        return ProfitDetailsBean.class;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_index;
+    }
+
+    public BaseParser getBaseParser() {
+        final Class aClass = getMessageClass();
+        return new BaseParser() {
+            @Override
+            public Object parseIType(JSONObject json) throws JSONException {
+                Group list = new Group();
+                if (json.getJSONObject("data").getString("result").equals("null")) return list;
+                List temp = JSON.parseArray(json.getJSONObject("data").getString("result"), aClass);
+                list.addAll(temp);
+                return list;
+            }
+        };
     }
 }

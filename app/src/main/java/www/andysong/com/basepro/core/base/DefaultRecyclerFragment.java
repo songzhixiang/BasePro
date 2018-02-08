@@ -1,18 +1,9 @@
-package www.andysong.com.basepro.base;
+package www.andysong.com.basepro.core.base;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
 import www.andysong.com.basepro.R;
-import www.andysong.com.basepro.http.NoDataResponse;
 
 /**
  * <pre>
@@ -33,7 +24,7 @@ public abstract class DefaultRecyclerFragment extends BaseRecyclerFragment {
 
     @Override
     protected void initEventAndData(View mView) {
-        super.initEventAndData(mView);
+
         if (!isLoadedData) {
 
             syncLoad();

@@ -18,6 +18,18 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".modular.index.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".example.ExTranslucentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,11 +37,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".modular.index.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:name=".GuideActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Guide" />
         <activity
-            android:name=".example.ExTranslucentActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:name=".example.ExSwipeBackActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".modular.shop.ui.SwipeBackActivityDemo" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
