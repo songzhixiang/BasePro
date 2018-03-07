@@ -63,10 +63,10 @@ public class HttpClientApi {
             //设置统一的请求头部参数
             builder.addInterceptor(chain -> {
                 Request original = chain.request();
-                if (UserManager.isLogin()) {
+                if (true) {
                     Request request = original.newBuilder()
-                            .header("Authorization", RealmManager.INSTANCE.queryUserToken().getType()+" "
-                            +RealmManager.INSTANCE.queryUserToken().getAccess())
+                            .header("Authorization",
+                            "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vZy1hcGkuY2RhYm9uLmNvbS9hcGkvdjEvdXNlci9sb2dpbiIsImlhdCI6MTUxODI0NTk4NiwiZXhwIjoxNTQ5MzQ5OTg2LCJuYmYiOjE1MTgyNDU5ODYsImp0aSI6IkxveDA3eENzY0dxV0xRaDciLCJzdWIiOjM2LCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.blPoqV793sl8J8ATgemcS9G2MZtZd6snKEFngbGVqDs")
                             .header("device-id", DeviceUtils.getAndroidID())
                             .header("device-model", DeviceUtils.getManufacturer())
                             .header("os-name", "Android")

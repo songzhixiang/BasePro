@@ -1,14 +1,10 @@
 package www.andysong.com.basepro.modular.favorite.ui;
 
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
-import com.qmuiteam.qmui.widget.QMUITopBar;
 
-import butterknife.BindView;
 import www.andysong.com.basepro.R;
 import www.andysong.com.basepro.core.base.BaseFragment;
 
@@ -24,8 +20,7 @@ import www.andysong.com.basepro.core.base.BaseFragment;
 
 public class FavoriteFragment extends BaseFragment {
 
-    @BindView(R.id.topbar)
-    QMUITopBar mTopBar;
+
 
     @Override
     protected int getLayoutId() {
@@ -41,11 +36,17 @@ public class FavoriteFragment extends BaseFragment {
         return fragment;
     }
 
+
+
     @Override
     protected void initEventAndData(View mView) {
         LogUtils.e("FavoriteFragment  加载了");
-        QMUIStatusBarHelper.getStatusbarHeight(getContext());
-        mTopBar.setTitle("搜索");
-        mTopBar.setBackgroundColor(ContextCompat.getColor(_mActivity, R.color.columbia_blue));
+        setHeader(R.color.columbia_blue,0, "我的收藏", "点赞",this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+
     }
 }

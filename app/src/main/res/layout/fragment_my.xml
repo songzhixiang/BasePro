@@ -5,14 +5,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <View
-        android:background="@color/cornflower"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/status_bar_height"/>
-    <com.qmuiteam.qmui.widget.QMUITopBar
-        android:id="@+id/topbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/qmui_topbar_height"/>
+
+    <include layout="@layout/toolbar_layout"/>
     <TextView
         android:text="这是我的"
         android:id="@+id/tv_index"

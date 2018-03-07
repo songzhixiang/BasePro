@@ -7,8 +7,9 @@ import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.qmuiteam.qmui.widget.QMUITopBar;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,8 +37,6 @@ import www.andysong.com.basepro.modular.index.bean.ProfitDetailsBean;
 public class IndexFragment extends DefaultRecyclerFragment {
 
 
-    @BindView(R.id.topbar)
-    QMUITopBar topbar;
 
 
 
@@ -53,15 +52,9 @@ public class IndexFragment extends DefaultRecyclerFragment {
     @Override
     protected void initEventAndData(View mView) {
         super.initEventAndData(mView);
+        setHeader(R.color.cornflower,0, "首页", "点赞",this);
         LogUtils.e("IndexFragment  加载了");
-        topbar.setTitle("首页");
-        topbar.setBackgroundColor(ContextCompat.getColor(_mActivity, R.color.columbia_blue));
-        topbar.addRightImageButton(R.drawable.ic_camera,1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogUtils.e("点击了右边");
-            }
-        });
+
     }
 
     @Override
@@ -71,17 +64,19 @@ public class IndexFragment extends DefaultRecyclerFragment {
 
     @Override
     public void onSetAdapter() {
-
+        mAdapter.setOnItemClickListener((adapter, view, position) -> ToastUtils.showShort("第"+position+"条数据"));
     }
 
     @Override
     public String getUrl() {
         return "api/v1/user/trade";
+//        return "api/v1/user/bill";
     }
 
     @Override
     public void getRequestParams(ArrayMap params) {
         params.put("type",3);
+//        params.put("type",2);
     }
 
     @Override

@@ -7,8 +7,10 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
+import android.view.WindowManager;
 
 import com.mingle.widget.ShapeLoadingDialog;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.tapadoo.alerter.Alerter;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.android.ActivityEvent;
@@ -38,6 +40,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements ISuppo
     final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);
     private String mDefaultLoadingString = "加载中...";
     private ShapeLoadingDialog mDialog;
+    public SystemBarTintManager mSystemBarTintManager;
     @Override
     public SupportActivityDelegate getSupportDelegate() {
         return mDelegate;
@@ -57,6 +60,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements ISuppo
         {
             setContentView(getLayout());
         }
+        initSystemBar(mContext);
         mUnBinder = ButterKnife.bind(this);
         initEventAndData(savedInstanceState);
     }
@@ -65,6 +69,13 @@ public abstract class BaseActivity extends RxAppCompatActivity implements ISuppo
     public void onPostCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onPostCreate(savedInstanceState, persistentState);
         mDelegate.onPostCreate(savedInstanceState);
+    }
+
+    private void initSystemBar(Activity activity) {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        mSystemBarTintManager = new SystemBarTintManager(activity);
+        mSystemBarTintManager.setStatusBarTintEnabled(true);
+        mSystemBarTintManager.setStatusBarTintResource(R.color.transparent);
     }
 
     @Override

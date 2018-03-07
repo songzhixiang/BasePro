@@ -1,13 +1,10 @@
 package www.andysong.com.basepro.modular.my.ui;
 
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.blankj.utilcode.util.LogUtils;
-import com.qmuiteam.qmui.widget.QMUITopBar;
 
-import butterknife.BindView;
 import www.andysong.com.basepro.R;
 import www.andysong.com.basepro.core.base.BaseFragment;
 
@@ -23,8 +20,7 @@ import www.andysong.com.basepro.core.base.BaseFragment;
 
 public class MyFragment extends BaseFragment {
 
-    @BindView(R.id.topbar)
-    QMUITopBar mTopBar;
+
 
     public static MyFragment newInstance() {
 
@@ -42,7 +38,6 @@ public class MyFragment extends BaseFragment {
     @Override
     protected void initEventAndData(View mView) {
         LogUtils.e("MyFragment  加载了");
-        mTopBar.setTitle("搜索");
-        mTopBar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.cornflower));
+        setHeader(R.color.chartreuse,0, "MyFragment", "点赞",this);
     }
 }

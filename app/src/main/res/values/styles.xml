@@ -1,17 +1,12 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="QMUI.Compat.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:listPreferredItemHeight">?attr/qmui_list_item_height_higher</item>
-        <item name="android:listPreferredItemHeightSmall">?attr/qmui_list_item_height</item>
-        <item name="colorAccent">@color/maya_Blue</item>
-        <!-- 配置qmui提供的theme -->
-        <item name="qmui_config_color_blue">@color/maya_Blue</item>
-        <item name="QMUITopBarStyle">@style/QDTopBar</item>
-        <item name="qmui_content_spacing_horizontal">20dp</item>
-        <item name="qmui_content_padding_horizontal">@dimen/qmui_content_spacing_horizontal</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/colorWhite</item>
     </style>
 
     <style name="SplashTheme" parent="AppTheme">
@@ -20,6 +15,9 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="AppTheme.SwipeBack" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 
     <style name="AppTheme.Guide">
         <item name="windowActionBar">false</item>
@@ -28,12 +26,4 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="QDTopBar" parent="QMUI.TopBar">
-        <item name="qmui_topbar_bg_color">@color/maya_Blue</item>
-        <item name="qmui_topbar_title_color">@color/qmui_config_color_white</item>
-        <item name="qmui_topbar_subtitle_color">@color/qmui_config_color_white</item>
-        <item name="qmui_topbar_text_btn_color_state_list">@color/maya_Blue</item>
-        <item name="qmui_topbar_height">48dp</item>
-        <item name="qmui_topbar_image_btn_height">48dp</item>
-    </style>
 </resources>

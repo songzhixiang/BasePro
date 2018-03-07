@@ -5,12 +5,16 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
+
 import com.tapadoo.alerter.Alerter;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.android.FragmentEvent;
@@ -31,7 +35,7 @@ import www.andysong.com.basepro.R;
  * Created by andysong on 2018/1/16.
  */
 
-public abstract class BaseFragment extends RxFragment implements ISupportFragment {
+public abstract class BaseFragment extends RxFragment implements ISupportFragment,View.OnClickListener {
 
     final SupportFragmentDelegate mDelegate = new SupportFragmentDelegate(this);
     protected FragmentActivity _mActivity;
@@ -50,8 +54,6 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(getLayoutId(), null);
-        QMUIStatusBarHelper.translucent(_mActivity);
-
         return mView;
     }
 
@@ -120,6 +122,15 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
         hideSoftInput();
     }
 
+    public void onClick(View v) {
+//        if (UiUtils.isFastDoubleClick()) return;
+        switch (v.getId()) {
+            case R.id.banner_back:
+//                onBackPressed();
+                break;
+        }
+    }
+
     @Override
     public void onDestroy() {
         mDelegate.onDestroy();
@@ -185,6 +196,106 @@ public abstract class BaseFragment extends RxFragment implements ISupportFragmen
     public FragmentAnimator onCreateFragmentAnimator() {
         return mDelegate.onCreateFragmentAnimator();
 
+    }
+
+    /**
+     * 设置头部
+     *
+     * @param backImage
+     * @param title
+     * @param operate1Image
+     * @param listener
+     */
+    public void setHeader(int backImage, String title, int operate1Image, View.OnClickListener listener) {
+        ImageView banner_back = mView.findViewById(R.id.banner_back);
+        TextView banner_title = mView.findViewById(R.id.banner_title);
+        ImageView banner_right_image = mView.findViewById(R.id.banner_right_image);
+        if (banner_back != null) {
+            if (backImage == -1) {
+                banner_back.setVisibility(View.GONE);
+            } else if (backImage == 0) {
+                banner_back.setImageResource(R.drawable.back_icon);
+                banner_back.setVisibility(View.VISIBLE);
+                banner_back.setOnClickListener(listener);
+            } else {
+                banner_back.setImageResource(backImage);
+                banner_back.setVisibility(View.VISIBLE);
+                banner_back.setOnClickListener(listener);
+            }
+        }
+        if (banner_title != null) {
+            if (!TextUtils.isEmpty(title)) {
+                banner_title.setVisibility(View.VISIBLE);
+                banner_title.setText(title);
+            } else {
+                banner_title.setVisibility(View.GONE);
+            }
+        }
+        if (banner_right_image != null) {
+            if (operate1Image != -1) {
+                banner_right_image.setVisibility(View.VISIBLE);
+                banner_right_image.setOnClickListener(listener);
+                banner_right_image.setImageResource(operate1Image);
+            } else {
+                banner_right_image.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    public void setToolbarEnable(boolean enable) {
+        if (!enable) {
+            mView.findViewById(R.id.banner_bar).setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 设置头部
+     *
+     * @param backImage
+     * @param title
+     * @param rightStr
+     * @param listener
+     */
+    public void setHeader(int color, int backImage, String title, String rightStr, View.OnClickListener listener) {
+        LinearLayout banner_bar = mView.findViewById(R.id.banner_bar);
+        ImageView banner_back = mView.findViewById(R.id.banner_back);
+        TextView banner_title = mView.findViewById(R.id.banner_title);
+        TextView banner_right_text = mView.findViewById(R.id.banner_right_text);
+        if (color!=0)
+        {
+            banner_bar.setBackgroundColor(color);
+        }
+
+        if (banner_back != null) {
+            if (backImage == -1) {
+                banner_back.setVisibility(View.GONE);
+            } else if (backImage == 0) {
+                banner_back.setImageResource(R.drawable.back_icon);
+                banner_back.setVisibility(View.VISIBLE);
+                banner_back.setOnClickListener(listener);
+            } else {
+                banner_back.setImageResource(backImage);
+                banner_back.setVisibility(View.VISIBLE);
+                banner_back.setOnClickListener(listener);
+            }
+        }
+        if (banner_title != null) {
+            if (!TextUtils.isEmpty(title)) {
+                banner_title.setVisibility(View.VISIBLE);
+                banner_title.setText(title);
+            } else {
+                banner_title.setVisibility(View.GONE);
+            }
+        }
+        if (banner_right_text != null) {
+            if (!TextUtils.isEmpty(rightStr)) {
+                banner_right_text.setVisibility(View.VISIBLE);
+                banner_right_text.setOnClickListener(listener);
+                banner_right_text.setText(rightStr);
+            } else {
+                banner_right_text.setVisibility(View.GONE);
+            }
+        }
     }
 
     public void showErrorMsg(String msg, int time) {

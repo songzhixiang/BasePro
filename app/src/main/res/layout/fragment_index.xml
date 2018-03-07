@@ -1,31 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<android.support.v4.widget.SwipeRefreshLayout
-    android:id="@+id/swiplayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+
+    <include layout="@layout/toolbar_layout"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swiplayout"
+
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/status_bar_height"
-            android:background="@color/columbia_blue" />
-
-        <com.qmuiteam.qmui.widget.QMUITopBar
-            android:id="@+id/topbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/qmui_topbar_height" />
+        android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recylcerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </LinearLayout>
 
-</android.support.v4.widget.SwipeRefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>
+

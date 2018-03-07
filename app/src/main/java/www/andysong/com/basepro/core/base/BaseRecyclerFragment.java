@@ -32,7 +32,7 @@ import www.andysong.com.basepro.http.parser.ParseException;
  * Created by andysong on 2018/1/16.
  */
 
-public abstract class BaseRecyclerFragment extends RootFragment implements BaseListListener, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
+public abstract class BaseRecyclerFragment extends BaseFragment implements BaseListListener, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
 
     public RecyclerView mRecyclerView;
     protected BaseQuickAdapter mAdapter;

@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
-import com.qmuiteam.qmui.widget.QMUITopBar;
+
+
 
 import butterknife.BindView;
 import www.andysong.com.basepro.R;
@@ -22,8 +22,7 @@ import www.andysong.com.basepro.core.base.BaseActivity;
  */
 
 public class ExTranslucentActivity extends BaseActivity {
-    @BindView(R.id.topbar)
-    QMUITopBar mTopBar;
+
 
     @Override
     protected int getLayout() {
@@ -32,15 +31,7 @@ public class ExTranslucentActivity extends BaseActivity {
 
     @Override
     protected void initEventAndData(Bundle savedInstanceState) {
-        QMUIStatusBarHelper.translucent(this);
-        mTopBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
-        mTopBar.addLeftBackImageButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
 
-        mTopBar.setTitle("沉浸式状态栏示例");
     }
 
 }

@@ -1,20 +1,14 @@
 package www.andysong.com.basepro.modular.shop.ui;
 
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.qmuiteam.qmui.widget.QMUITopBar;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import www.andysong.com.basepro.R;
 import www.andysong.com.basepro.core.base.BaseFragment;
 import www.andysong.com.basepro.example.ExSwipeBackActivity;
@@ -30,8 +24,7 @@ import www.andysong.com.basepro.example.ExSwipeBackActivity;
  */
 
 public class ShopFragment extends BaseFragment {
-    @BindView(R.id.topbar)
-    QMUITopBar mTopBar;
+
     @BindView(R.id.btn_start_swipeactivity)
     Button btnStartSwipeactivity;
     @BindView(R.id.btn_start_swipefragment)
@@ -55,8 +48,8 @@ public class ShopFragment extends BaseFragment {
     @Override
     protected void initEventAndData(View mView) {
         LogUtils.e("ShopFragment  加载了");
-        mTopBar.setTitle("搜索");
-        mTopBar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.colorAccent));
+        setHeader(R.color.colorAccent,0, "ShopFragment", "点赞",this);
+
     }
 
     @OnClick({R.id.btn_start_swipeactivity, R.id.btn_start_swipefragment})

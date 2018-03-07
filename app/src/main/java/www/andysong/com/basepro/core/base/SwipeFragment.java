@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
+
 
 import www.andysong.com.basepro.core.swipeback.ISwipeBackFragment;
 import www.andysong.com.basepro.core.swipeback.SwipeBackFragmentDelegate;
@@ -36,8 +36,6 @@ public abstract class SwipeFragment extends BaseFragment implements ISwipeBackFr
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(getLayoutId(), null);
-        QMUIStatusBarHelper.translucent(_mActivity);
-
         return attachToSwipeBack(mView);
     }
 
