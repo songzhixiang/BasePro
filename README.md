@@ -1,2 +1,6 @@
 # BasePro
-基于BasePro的项目，快速开发以及个性化定制项目
+
+[![API](https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=19)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+GitHub地址：[https://github.com/songzhixiang/BasePro](https://github.com/songzhixiang/BasePro)
