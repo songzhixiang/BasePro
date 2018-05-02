@@ -70,7 +70,7 @@ public class HttpClientApi {
                             .header("device-id", DeviceUtils.getAndroidID())
                             .header("device-model", DeviceUtils.getManufacturer())
                             .header("os-name", "Android")
-                            .header("os-version", DeviceUtils.getSDKVersion() + "")
+                            .header("os-version", DeviceUtils.getSDKVersionCode() + "")
                             .method(original.method(), original.body())
                             .build();
 

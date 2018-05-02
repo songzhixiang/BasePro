@@ -17,7 +17,9 @@ import www.andysong.com.basepro.R;
 public class DialogHelper {
     public static void showRationaleDialog(final PermissionUtils.OnRationaleListener.ShouldRequest shouldRequest) {
         Activity topActivity = ActivityUtils.getTopActivity();
-        if (topActivity == null) return;
+        if (topActivity == null) {
+            return;
+        }
         new AlertDialog.Builder(topActivity)
                 .setTitle(android.R.string.dialog_alert_title)
                 .setMessage(R.string.permission_rationale_message)
@@ -41,14 +43,16 @@ public class DialogHelper {
 
     public static void showOpenAppSettingDialog() {
         Activity topActivity = ActivityUtils.getTopActivity();
-        if (topActivity == null) return;
+        if (topActivity == null) {
+            return;
+        }
         new AlertDialog.Builder(topActivity)
                 .setTitle(android.R.string.dialog_alert_title)
                 .setMessage(R.string.permission_denied_forever_message)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        PermissionUtils.openAppSettings();
+                        PermissionUtils.launchAppDetailsSettings();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

@@ -112,7 +112,7 @@ public class ExLoginFragment extends BaseFragment {
         headParams.put("device-model", DeviceUtils.getManufacturer());//厂商
         headParams.put("device-token", RxDeviceTool.getMacAddress());
         headParams.put("os-name", "Android");
-        headParams.put("os-version", DeviceUtils.getSDKVersion());
+        headParams.put("os-version", DeviceUtils.getSDKVersionCode());
 
         HttpClientApi.postHeader("api/v1/user/login", headParams, params, UserBean.class, false, new ProgressHttpObserver<UserBean>(this) {
             @Override
