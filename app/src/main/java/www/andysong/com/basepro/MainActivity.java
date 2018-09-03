@@ -31,10 +31,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.bottomBar)
     SpaceNavigationView bottomBar;
 
-//    public static final int FIRST = 0;
-//    public static final int SECOND = 1;
-//    public static final int THIRD = 2;
-//    public static final int FOURTH = 3;
+
 
     private BaseFragment[] mFragments = new BaseFragment[4];
 
@@ -51,27 +48,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initEventAndData(Bundle savedInstanceState) {
         initPermission();
-//        BaseFragment firstFragment = findFragment(IndexFragment.class);
-//        if (firstFragment == null) {
-//            mFragments[FIRST] = IndexFragment.newInstance();
-//            mFragments[SECOND] = ShopFragment.newInstance();
-//            mFragments[THIRD] = FavoriteFragment.newInstance();
-//            mFragments[FOURTH] = MyFragment.newInstance();
-//
-//            loadMultipleRootFragment(R.id.viewPager, FIRST,
-//                    mFragments[FIRST],
-//                    mFragments[SECOND],
-//                    mFragments[THIRD],
-//                    mFragments[FOURTH]);
-//        } else {
-//            // 这里库已经做了Fragment恢复,所有不需要额外的处理了, 不会出现重叠问题
-//
-//            // 这里我们需要拿到mFragments的引用
-//            mFragments[FIRST] = firstFragment;
-//            mFragments[SECOND] = findFragment(ShopFragment.class);
-//            mFragments[THIRD] = findFragment(FavoriteFragment.class);
-//            mFragments[FOURTH] = findFragment(MyFragment.class);
-//        }
+
 
 
         bottomBar.initWithSaveInstanceState(savedInstanceState);
