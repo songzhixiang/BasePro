@@ -1,8 +1,6 @@
 package www.andysong.com.basepro.db;
 
-import www.andysong.com.basepro.modular.my.bean.Token;
-import www.andysong.com.basepro.modular.my.bean.User;
-import www.andysong.com.basepro.modular.my.bean.UserBean;
+
 
 /**
  * <pre>
@@ -16,15 +14,5 @@ import www.andysong.com.basepro.modular.my.bean.UserBean;
 
 public interface DBHelper {
 
-    void insertUserInfo(User user);
 
-    void insertUserToken(Token token);
-
-    User queryUserInfo();
-
-    Token queryUserToken();
-
-    void deleteUserInfo();
-
-    void deleteUserToken();
 }
