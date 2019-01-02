@@ -5,21 +5,21 @@ import android.content.Context;
 
 import com.blankj.utilcode.util.Utils;
 
-import java.util.logging.Logger;
 
-import io.realm.Realm;
+
 
 /**
  * Application
+ *
  * Created by andysong on 2018/1/16.
  */
 
 public class MyApp extends Application {
-    private static Context sApplicationContext;
+    private static MyApp sApplicationContext = null;
     private ActivityHelper mActivityHelper;
 
     // 获取ApplicationContext
-    public static Context getContext() {
+    public static MyApp getContext() {
         return sApplicationContext;
     }
 
@@ -28,8 +28,6 @@ public class MyApp extends Application {
         super.onCreate();
         sApplicationContext = this;
         //初始化数据库
-        Realm.init(this);
-        //初始化工具类
         Utils.init(this);
         mActivityHelper = new ActivityHelper();
         registerActivityLifecycleCallbacks(mActivityHelper);

@@ -13,17 +13,15 @@ import java.util.Stack;
 
 public class ActivityHelper implements Application.ActivityLifecycleCallbacks {
 
-    private static Stack<Activity> mActivityStack;
+
 
     public ActivityHelper() {
+
     }
 
     @Override
     public void onActivityCreated(Activity activity, Bundle bundle) {
-        if (mActivityStack == null) {
-            mActivityStack = new Stack<>();
-        }
-        mActivityStack.add(activity);
+        ActivityManager.getInstance().addActivity(activity);
     }
 
     @Override
@@ -53,6 +51,6 @@ public class ActivityHelper implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        mActivityStack.remove(activity);
+        ActivityManager.getInstance().finishActivity(activity);
     }
 }

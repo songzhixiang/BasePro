@@ -1,8 +1,10 @@
 package www.andysong.com.basepro;
 
-import android.os.Bundle;
 
-import www.andysong.com.basepro.core.base.BaseActivity;
+
+import www.andysong.com.basepro.core.view.BaseActivity;
+
+
 
 
 /**
@@ -15,16 +17,7 @@ import www.andysong.com.basepro.core.base.BaseActivity;
  * </pre>
  */
 
-public class SplashActivity extends BaseActivity {
+public abstract class SplashActivity extends BaseActivity {
 
-    @Override
-    protected int getLayout() {
-        return 0;
-    }
-
-    @Override
-    protected void initEventAndData(Bundle savedInstanceState) {
-
-    }
 
 }
