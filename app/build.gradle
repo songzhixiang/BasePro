@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.example.android.basepro'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.android.basepro"
-        minSdk 26
-        targetSdk 33
+        minSdk 23
+        targetSdk 34
         versionCode 1
         versionName "1.0"
     }
@@ -55,15 +55,15 @@ dependencies {
 
     //IJK
 
-    implementation 'com.tencent.iot.thirdparty.android:ijkplayer-java:2.0.7'
-    implementation 'com.tencent.iot.thirdparty.android:ijkplayer-armv7a:2.0.7'
-    implementation 'com.tencent.iot.thirdparty.android:ijkplayer-arm64:2.0.7'
+//    implementation 'com.tencent.iot.thirdparty.android:ijkplayer-java:2.0.7'
+//    implementation 'com.tencent.iot.thirdparty.android:ijkplayer-armv7a:2.0.7'
+//    implementation 'com.tencent.iot.thirdparty.android:ijkplayer-arm64:2.0.7'
 
     //lifecycle
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+//    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
-    implementation 'com.blankj:utilcodex:1.31.1'
+//    implementation 'com.blankj:utilcodex:1.31.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 }

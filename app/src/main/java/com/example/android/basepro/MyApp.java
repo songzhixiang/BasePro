@@ -3,7 +3,7 @@ package com.example.android.basepro;
 import android.app.Application;
 import android.content.Context;
 
-import com.blankj.utilcode.util.Utils;
+
 
 
 
@@ -27,8 +27,7 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         sApplicationContext = this;
-        //初始化数据库
-        Utils.init(this);
+
         mActivityHelper = new ActivityHelper();
         registerActivityLifecycleCallbacks(mActivityHelper);
     }
