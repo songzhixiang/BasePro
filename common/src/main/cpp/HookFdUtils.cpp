@@ -71,29 +71,47 @@ Java_com_android_common_LibIPC_nativeWriteData(JNIEnv* env, jobject, jint eventF
     const char* chars = env->GetStringUTFChars(dataStr, nullptr);
     int len = env->GetStringUTFLength(dataStr);
 
-    // --- 写入共享内存 (简单 RingBuffer 实现) ---
+    // 获取当前写位置 (Relaxed 即可，因为只有一个 Producer 线程)
     uint32_t current_write = g_header->write_pos.load(std::memory_order_relaxed);
+    bool need_wrap = false;
 
-    // 写入长度 (4 bytes)
-    if (current_write + 4 + len > g_buffer_capacity) {
-        current_write = 0; // 简单处理：如果这就满了，回绕 (实际项目需处理边界断裂)
+    // --- 核心修复：回绕判断与填充逻辑 ---
+
+    // 情况1: 连头部 4 字节都写不下了
+    if (current_write + 4 > g_buffer_capacity) {
+        need_wrap = true;
+    }
+        // 情况2: 头部能写下，但数据写不下
+    else if (current_write + 4 + len > g_buffer_capacity) {
+        // 关键：在这里写入 0 作为 Padding，告诉消费者“此路不通，去头部”
+        *(uint32_t*)(g_data_buffer + current_write) = 0;
+        need_wrap = true;
     }
 
-    // 写入长度头
-    *(uint32_t*)(g_data_buffer + current_write) = len;
-    current_write += 4;
+    if (need_wrap) {
+        current_write = 0;
+    }
 
-    // 写入数据
-    memcpy(g_data_buffer + current_write, chars, len);
-    current_write += len;
+    // --- 写入新数据 ---
 
-    // 更新 Header 指针 (原子操作)
+    // 再次检查头部（防止 capacity 极小的情况，防御性编程）
+    if (current_write + 4 <= g_buffer_capacity) {
+        *(uint32_t*)(g_data_buffer + current_write) = len;
+        current_write += 4;
+    }
+
+    // 写入 Payload
+    if (current_write + len <= g_buffer_capacity) {
+        memcpy(g_data_buffer + current_write, chars, len);
+        current_write += len;
+    }
+
+    // 发布写指针 (Release 语义，保证数据先落盘)
     g_header->write_pos.store(current_write, std::memory_order_release);
 
     env->ReleaseStringUTFChars(dataStr, chars);
 
-    // --- 发送通知 (Signal) ---
-    // 往 eventfd 写 1，唤醒对端
+    // 通知 EventFD
     uint64_t u = 1;
     write(eventFd, &u, sizeof(uint64_t));
 }

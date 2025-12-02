@@ -76,6 +76,7 @@ public class CarClientActivity extends AppCompatActivity {
     private final ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.e("Andy", "回调线程 " + Thread.currentThread().getName());
             mRemoteService = IIpcService.Stub.asInterface(service);
             try {
                 // 直接获取对象
