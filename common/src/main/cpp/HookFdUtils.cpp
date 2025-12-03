@@ -13,12 +13,19 @@
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, TAG, __VA_ARGS__)
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, TAG, __VA_ARGS__)
 
-// 共享内存头部结构 (16 bytes)
+// 每个数据包的头部 Magic，用于校验数据边界有效性
+#define PACKET_MAGIC 0xAABBCCDD
+
 struct SharedHeader {
-    std::atomic<uint32_t> write_pos; // 写索引
-    std::atomic<uint32_t> read_pos;  // 读索引 (Client 维护，简单 demo 中我们只让 Server 覆盖写，Client 追赶)
-    uint32_t data_size;              // 缓冲区总大小
-    uint32_t magic;                  // 校验位
+    // 读写指针
+    std::atomic<uint32_t> write_pos;
+    // Seqlock 版本号 (核心机制)
+    // 偶数：空闲/稳定状态
+    // 奇数：正在写入/不稳定状态
+    std::atomic<uint64_t> seqlock;
+
+    uint32_t data_size;
+    uint32_t header_magic; // 全局 Magic
 };
 
 // 全局变量保存映射的地址
@@ -46,14 +53,14 @@ Java_com_android_common_LibIPC_nativeInit(JNIEnv* env, jobject, jint fd, jint si
     g_buffer_capacity = size - sizeof(SharedHeader);
 
     if (isProducer) {
-        // 生产者初始化 Header
+        // 初始化
         g_header->write_pos = 0;
-        g_header->read_pos = 0;
+        g_header->seqlock = 0; // 初始版本号 0
         g_header->data_size = g_buffer_capacity;
-        g_header->magic = 0x12345678;
+        g_header->header_magic = 0x12345678;
         LOGI("Producer init done. Capacity: %d", g_buffer_capacity);
     } else {
-        LOGI("Consumer init done. Magic: %x", g_header->magic);
+        LOGI("Consumer init done. Magic: %x", g_header->header_magic);
     }
 }
 
@@ -69,49 +76,54 @@ Java_com_android_common_LibIPC_nativeWriteData(JNIEnv* env, jobject, jint eventF
     if (!g_data_buffer) return;
 
     const char* chars = env->GetStringUTFChars(dataStr, nullptr);
-    int len = env->GetStringUTFLength(dataStr);
+    int payload_len = env->GetStringUTFLength(dataStr);
 
-    // 获取当前写位置 (Relaxed 即可，因为只有一个 Producer 线程)
+    // Packet 总长 = Magic(4) + Len(4) + Data
+    int packet_total_len = 4 + 4 + payload_len;
+
+    // --- 1. 开启 Seqlock 事务 (版本号 +1，变成奇数) ---
+    // memory_order_acquire 确保之前的读写全部完成
+    uint64_t current_seq = g_header->seqlock.load(std::memory_order_relaxed);
+    g_header->seqlock.store(current_seq + 1, std::memory_order_release);
+
+    // --- 2. 计算写入位置 ---
     uint32_t current_write = g_header->write_pos.load(std::memory_order_relaxed);
-    bool need_wrap = false;
 
-    // --- 核心修复：回绕判断与填充逻辑 ---
-
-    // 情况1: 连头部 4 字节都写不下了
-    if (current_write + 4 > g_buffer_capacity) {
-        need_wrap = true;
-    }
-        // 情况2: 头部能写下，但数据写不下
-    else if (current_write + 4 + len > g_buffer_capacity) {
-        // 关键：在这里写入 0 作为 Padding，告诉消费者“此路不通，去头部”
-        *(uint32_t*)(g_data_buffer + current_write) = 0;
-        need_wrap = true;
-    }
-
-    if (need_wrap) {
+    // 检查是否需要回绕 (Padding Protocol)
+    // 如果剩余空间放不下这个包，就在当前位置写 0 (Padding)，然后回绕
+    bool wrapped = false;
+    if (current_write + packet_total_len > g_buffer_capacity) {
+        // 只有当剩余空间足够写一个 Length(4) 时才写 Padding 0
+        // 否则直接回绕即可，因为消费者会有边界检查
+        if (g_buffer_capacity - current_write >= 4) {
+            // 写入长度 0，表示 Padding
+            *(uint32_t*)(g_data_buffer + current_write + 4) = 0;
+        }
         current_write = 0;
+        wrapped = true;
     }
 
-    // --- 写入新数据 ---
+    // --- 3. 强行写入数据 (Overwrite) ---
+    // 不管读指针在哪里，直接写。Seqlock 会保证消费者能发现数据变脏了。
 
-    // 再次检查头部（防止 capacity 极小的情况，防御性编程）
-    if (current_write + 4 <= g_buffer_capacity) {
-        *(uint32_t*)(g_data_buffer + current_write) = len;
-        current_write += 4;
-    }
+    // 写入 Packet Magic
+    *(uint32_t*)(g_data_buffer + current_write) = PACKET_MAGIC;
+    // 写入 Length
+    *(uint32_t*)(g_data_buffer + current_write + 4) = payload_len;
+    // 写入 Body
+    memcpy(g_data_buffer + current_write + 8, chars, payload_len);
 
-    // 写入 Payload
-    if (current_write + len <= g_buffer_capacity) {
-        memcpy(g_data_buffer + current_write, chars, len);
-        current_write += len;
-    }
+    // 更新写指针
+    uint32_t new_write_pos = current_write + packet_total_len;
+    g_header->write_pos.store(new_write_pos, std::memory_order_relaxed);
 
-    // 发布写指针 (Release 语义，保证数据先落盘)
-    g_header->write_pos.store(current_write, std::memory_order_release);
+    // --- 4. 结束 Seqlock 事务 (版本号 +1，变回偶数) ---
+    // memory_order_release 确保数据真正落盘后，版本号才更新
+    g_header->seqlock.store(current_seq + 2, std::memory_order_release);
 
     env->ReleaseStringUTFChars(dataStr, chars);
 
-    // 通知 EventFD
+    // 通知
     uint64_t u = 1;
     write(eventFd, &u, sizeof(uint64_t));
 }
